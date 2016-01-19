@@ -10,8 +10,6 @@ function initialize() {
 // read in geojson and plot that data
 function visualizeMap(json) {
 
-  console.log(json);
-
   // populate basemap
   var map = new L.Map("map", {
       center: new L.LatLng(46.85, 2.35),
@@ -58,9 +56,28 @@ function visualizeMap(json) {
   L.geoJson(json, {style: style}).addTo(map);
 
   var onClick = function() {
-    var a = $(this["options"]["className"])
-    console.log(a[0].localName); 
+    var a = $(this);
+    console.log(a["0"]["options"]["className"]); 
   };
+
+  
+  // retrieve book location json and add to the map
+  d3.json("/json/book_locations.json", function(error, bookLocationJson) {
+    if (error) return console.warn(error);
+    for (i = 0; i < bookLocationJson.length; i++) {
+
+      // manually add marker point to map for the current location
+      var locationLat = bookLocationJson[i].lat;
+      var locationLng = bookLocationJson[i].lng;
+      var bookId = bookLocationJson[i].id;
+
+      L.circleMarker([locationLat, locationLng], {color: "#C00000", radius: 4, 
+          className: '<' + String(bookId) + '>'}).addTo(map).on('mouseover', onClick);;
+  
+    }; 
+  });
+  
+
 
   // manually add marker point to map
   L.circleMarker([46.85, 2.35], {color: "#C00000", radius: 4, 
