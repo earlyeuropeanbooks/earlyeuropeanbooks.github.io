@@ -38,6 +38,11 @@ var updateBarchart = function() {
   d3.json("json/classifications.json", function(error, json) {
     if (error) return console.warn(error);
 
+    var colors = d3.scale.log()
+      .domain(d3.extent(json, function(d) { return d.val }))
+      .interpolate(d3.interpolateHcl)
+      .range([d3.rgb("#f84545"), d3.rgb("#720000")]);
+
     // update each bar of the bar chart
     var svg = d3.select("#barchart").select("svg")
     var barchart = svg.selectAll("rect").data(json);
@@ -61,6 +66,9 @@ var updateBarchart = function() {
             .on("click", function(d) {
               console.log(d)
             }) 
+            .attr("fill", function(d) {
+              return colors(d.val)
+            })
           .transition()
             .duration(1000)
             .attr("width", function(d) {return x(d.val)})
