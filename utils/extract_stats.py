@@ -3,6 +3,10 @@ import codecs, sys, json
 
 # read in ../data/EEB-1-7.txt
 
+##############################
+# write classifications json #
+##############################
+
 with codecs.open(sys.argv[1], 'r', 'latin1') as f:
   rows = f.readlines()
 
@@ -24,9 +28,6 @@ with codecs.open(sys.argv[1], 'r', 'latin1') as f:
       classification_two = rs[9]
       classification_three = rs[10]
       copy_location = rs[11] 
-
-      # trim excessive classifications
-      classification_one = classification_one.split("(")[0]
 
       classifications[classification_one] += 1
 
@@ -52,13 +53,27 @@ with codecs.open(sys.argv[1], 'r', 'latin1') as f:
     if classification in classification_overrides.iterkeys():
       classification = classification_overrides[classification]
 
-    classification_dict = {"classification": classification,
-        "classificationId": c2,
-        "val": classifications[k]}
+    # trim excessive classifications
+    classification = classification.split("(")[0]
+
+    # persist the selection group (classification), the string value the current observation
+    # has for that group (e.g. "Military handbooks"), the numeric id for that value,
+    # and the count of times the current string value occurs in the corpus. Also, save
+    # the raw form of the classification string
+
+    # selection string will be displayed to user, selection string raw indicates the selection
+    # string as it exists in the spreadsheet, and is only persisted for mapping selection strings
+    # back to their ids
+    classification_dict = {
+        "selectionGroup": "classification",
+        "selectionString": classification,
+        "selectionStringRaw": k,
+        "selectionId": c2,
+        "selectionCount": classifications[k]}
     clean_classifications.append(classification_dict)
 
   # sort the list of classifications alphabetically
-  sorted_classifications = sorted(clean_classifications, key=lambda k: k["classification"])
+  sorted_classifications = sorted(clean_classifications, key=lambda k: k["selectionString"])
 
   with open("../json/classifications.json",'w') as classifications_out:
     json.dump( sorted_classifications, classifications_out)
