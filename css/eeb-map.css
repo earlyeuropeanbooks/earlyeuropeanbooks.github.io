@@ -21,5 +21,6 @@ body {
 }
 
 #menu {
-  padding: 15px 0 0 0;
+  padding: 15px 0 0 60px;
+  white-space: nowrap;
 }
