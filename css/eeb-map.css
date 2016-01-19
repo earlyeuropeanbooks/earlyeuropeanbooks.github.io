@@ -5,7 +5,7 @@ body {
 
 #map { 
   position: absolute; 
-  top:0; 
+  top:50px; 
   bottom:0; 
   right:0; 
   left:30%;
@@ -17,7 +17,7 @@ body {
 }
 
 #barchart {
-  margin: 100px 0 0 0;
+  top: 50px;
 }
 
 #menu {
