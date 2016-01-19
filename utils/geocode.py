@@ -170,8 +170,9 @@ def write_map_location_json():
             # if user wants to perturb the lat long values,
             # spread them out from their city of origin slightly
             if perturb_locations == 1:
-              lat = lat + random.uniform(0, .1)
-              lng = lng + random.uniform(0, .1)
+              # use coin flip to determine whether sign is positive or negative
+              lat = lat + random.uniform(-perturb_limit, perturb_limit)
+              lng = lng + random.uniform(-perturb_limit, perturb_limit)
 
             book_locations_json.append( {"id":id, "lat":lat, "lng":lng} ) 
 
@@ -187,6 +188,7 @@ def write_map_location_json():
 
 if __name__ == "__main__":
   perturb_locations = 1
+  perturb_limit = .3
   max_observations_per_location = 20 
  
   #unique_locations = retrieve_locations()
