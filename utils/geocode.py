@@ -125,11 +125,27 @@ def retrieve_location_json(unique_locations):
     json.dump(location_id_to_name, location_ids_out)
 
 
+def map_classification_string_to_id():
+  """Read in the classifications.json to map classification strings to
+  their respective classification ids"""
+  classification_id_to_string = {}
+  with open("../json/classifications.json") as f:
+    f = json.load(f)
+    for d in f:
+      classification_id_to_string[ d["selectionStringRaw" ] ] = d["selectionId"]
+  return classification_id_to_string
+
+
+
 def write_map_location_json():
   """Write json to disk for each location to be plotted"""
   with open("../json/location_id_to_string.json") as f:
     location_id_to_string = json.load(f)
     string_to_location_id = {v:k for k, v in location_id_to_string.items()}
+
+  # map classification string to id so we can persist classification id
+  # as a class value within each book's point on the map
+  classification_string_to_id = map_classification_string_to_id()
 
   book_locations_json = []
   locations_counter = defaultdict(int)
@@ -141,7 +157,14 @@ def write_map_location_json():
         sr = r.split("\t")
         id = sr[0]
         prq_id = sr[1]
-        clean_location = sr[5]  
+        clean_location = sr[5] 
+        classification_string = sr[8] 
+
+        # we don't persist empty classification strings or their ids, so try/except
+        try:
+          classification_id = classification_string_to_id[classification_string]
+        except KeyError:
+          classification_id = ''
 
         # use the location's id (if available) to retrieve lat longs 
         # from persisted json
@@ -174,7 +197,7 @@ def write_map_location_json():
               lat = lat + random.uniform(-perturb_limit, perturb_limit)
               lng = lng + random.uniform(-perturb_limit, perturb_limit)
 
-            book_locations_json.append( {"id":id, "lat":lat, "lng":lng} ) 
+            book_locations_json.append( {"id":id, "lat":lat, "lng":lng, "classificationId": classification_id} ) 
 
         except IOError:
           continue
