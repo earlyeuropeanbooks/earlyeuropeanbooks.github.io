@@ -72,10 +72,13 @@ function visualizeMap(json) {
       var locationLng = bookLocationJson[i].lng;
       var bookId = bookLocationJson[i].id;
       var classificationId = bookLocationJson[i].classificationId;
+      var languageId = bookLocationJson[i].languageId;
 
       // add book id and classification id to the circle's class values
       L.circleMarker([locationLat, locationLng], {color: "#c00000", radius: 4, 
-          className: "bookId" + String(bookId) + " classificationId" + String(classificationId)   
+          className: "bookId" + String(bookId) + 
+            " classificationId" + String(classificationId) +
+            " languageId" + String(languageId) 
       }).addTo(map).on('mouseover', onClick);;
   
     }; 
