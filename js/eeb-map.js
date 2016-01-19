@@ -71,19 +71,16 @@ function visualizeMap(json) {
       var locationLat = bookLocationJson[i].lat;
       var locationLng = bookLocationJson[i].lng;
       var bookId = bookLocationJson[i].id;
+      var classificationId = bookLocationJson[i].classificationId;
 
+      // add book id and classification id to the circle's class values
       L.circleMarker([locationLat, locationLng], {color: "#c00000", radius: 4, 
-          className: '<' + String(bookId) + '>'}).addTo(map).on('mouseover', onClick);;
+          className: "bookId" + String(bookId) + " classificationId" + String(classificationId)   
+      }).addTo(map).on('mouseover', onClick);;
   
     }; 
   });
   
-
-
-  // manually add marker point to map
-  L.circleMarker([46.85, 2.35], {color: "#C00000", radius: 4, 
-      className: "<google.com>"}).addTo(map).on('mouseover', onClick);;
-
  
 };
  
