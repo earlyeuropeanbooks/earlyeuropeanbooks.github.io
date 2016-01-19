@@ -37,6 +37,7 @@ function visualizeMap(json) {
                       '#FFEDA0';
   }
 
+
   // add function that will use the color function above to set a 
   // given shapefile's fill value
   function style(feature) {
@@ -71,7 +72,7 @@ function visualizeMap(json) {
       var locationLng = bookLocationJson[i].lng;
       var bookId = bookLocationJson[i].id;
 
-      L.circleMarker([locationLat, locationLng], {color: "#C00000", radius: 4, 
+      L.circleMarker([locationLat, locationLng], {color: "#c00000", radius: 4, 
           className: '<' + String(bookId) + '>'}).addTo(map).on('mouseover', onClick);;
   
     }; 
