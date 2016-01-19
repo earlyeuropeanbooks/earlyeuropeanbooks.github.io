@@ -128,13 +128,23 @@ def retrieve_location_json(unique_locations):
 def map_classification_string_to_id():
   """Read in the classifications.json to map classification strings to
   their respective classification ids"""
-  classification_id_to_string = {}
+  classification_string_to_id = {}
   with open("../json/classifications.json") as f:
     f = json.load(f)
     for d in f:
-      classification_id_to_string[ d["selectionStringRaw" ] ] = d["selectionId"]
-  return classification_id_to_string
+      classification_string_to_id[ d["selectionStringRaw" ] ] = d["selectionId"]
+  return classification_string_to_id
 
+
+def map_language_string_to_id():
+  """Read in the languages.json to map language strings to 
+  their respective language ids"""
+  language_string_to_id = {}
+  with open("../json/languages.json") as f:
+    f = json.load(f)
+    for d in f:
+      language_string_to_id[ d["selectionStringRaw" ] ] = d["selectionId"]
+  return language_string_to_id
 
 
 def write_map_location_json():
@@ -146,6 +156,7 @@ def write_map_location_json():
   # map classification string to id so we can persist classification id
   # as a class value within each book's point on the map
   classification_string_to_id = map_classification_string_to_id()
+  language_string_to_id = map_language_string_to_id()
 
   book_locations_json = []
   locations_counter = defaultdict(int)
@@ -157,8 +168,15 @@ def write_map_location_json():
         sr = r.split("\t")
         id = sr[0]
         prq_id = sr[1]
-        clean_location = sr[5] 
+        clean_location = sr[5]
+        language_string = sr[7] 
         classification_string = sr[8] 
+
+        # we don't persist empty classification or language strings so try/except
+        try:
+          language_id = language_string_to_id[language_string]
+        except KeyError:
+          language_id = ''
 
         # we don't persist empty classification strings or their ids, so try/except
         try:
@@ -197,7 +215,7 @@ def write_map_location_json():
               lat = lat + random.uniform(-perturb_limit, perturb_limit)
               lng = lng + random.uniform(-perturb_limit, perturb_limit)
 
-            book_locations_json.append( {"id":id, "lat":lat, "lng":lng, "classificationId": classification_id} ) 
+            book_locations_json.append( {"id":id, "lat":lat, "lng":lng, "classificationId": classification_id, "languageId": language_id} ) 
 
         except IOError:
           continue
