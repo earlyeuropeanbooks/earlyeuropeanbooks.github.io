@@ -122,7 +122,8 @@ var updateBarchart = function() {
             return colors(d.selectionCount)
           })
           .attr("width", function(d) {return x(d.selectionCount)})
-          .attr("height", function(d, i) { return barHeight-1 });
+          .attr("height", function(d, i) { return barHeight-1 })
+          .style("cursor","pointer");
    
        bar.append("text")
           .attr("x", 5)
@@ -131,7 +132,8 @@ var updateBarchart = function() {
           .style("font-size", "10px")
           .on("click", function(d) {
             barChartClick(d);
-          }); 
+          })
+          .style("cursor","pointer"); 
 
       barchart.exit()
         .remove();
