@@ -44,10 +44,10 @@ function visualizeMap(json) {
     return {
         fillColor: getColor(feature.properties.density),
         weight: 2,
-        opacity: 1,
+        opacity: .3,
         color: 'white',
         dashArray: '3',
-        fillOpacity: 0.3
+        fillOpacity: 0.1
     };
   }
 
@@ -76,7 +76,8 @@ function visualizeMap(json) {
 
       // add book id and classification id to the circle's class values
       L.circleMarker([locationLat, locationLng], {color: "#c00000", radius: 4, 
-          className: "bookId" + String(bookId) + 
+          className: "mapPoint" +
+            " bookId" + String(bookId) + 
             " classificationId" + String(classificationId) +
             " languageId" + String(languageId) 
       }).addTo(map).on('mouseover', onClick);;
