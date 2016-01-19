@@ -46,7 +46,14 @@ var initializeBarchart = function() {
 
 // on click of bar chart update the opacity of 
 // circles on the plot
-var barChartClick = function(d) { 
+var barChartClick = function(d) {
+
+  // use barId + d.selectionId key to increase opacity
+  // of all but selected bars
+  d3.select("#barchart").selectAll("rect")
+    .style("opacity", ".4");
+  d3.select("#barId" + d.selectionId)
+    .style("opacity", "1");
 
   // determine the kind of selection currently being plotted
   // e.g. classification
@@ -113,6 +120,7 @@ var updateBarchart = function() {
       var bar = barchart.enter().append("g")
 
         bar.append("rect")
+          .attr("id", function(d, i) {return "barId" + d.selectionId})
           .attr("x", margin.left)
           .attr("y", function(d, i) {return i * barHeight;})
           .on("click", function(d) {
