@@ -8,7 +8,7 @@ body {
   top:50px; 
   bottom:0; 
   right:0; 
-  left:30%;
+  left:25%;
 }
  
 /* reset bootstrap container margins */
@@ -21,6 +21,6 @@ body {
 }
 
 #menu {
-  padding: 15px 0 0 3%;
+  padding: 15px 0 0 0;
   white-space: nowrap;
 }
