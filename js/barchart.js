@@ -37,7 +37,6 @@ var initializeBarchart = function() {
 // on click of bar chart update the opacity of 
 // circles on the plot
 var barChartClick = function(d) { 
-  console.log(d);
 
   // determine the kind of selection currently being plotted
   // e.g. classification
@@ -59,63 +58,82 @@ var barChartClick = function(d) {
 
 };
 
+var dataKey = function(d) {
+  return d.selectionGroup + d.selectionId;
+};
 
 
 var updateBarchart = function() {
-  d3.json("json/classifications.json", function(error, json) {
+
+  // on request to update the bar chart, 
+  // check to see which value is selected in the dropdown
+  // and retrieve that json
+  var dropdownVal = $("#selectionDropdown").val();
+    
+  // the selected value is a path to the desired json
+  // so retrieve that json
+  d3.json(dropdownVal, function(error, json) {
     if (error) return console.warn(error);
 
-    var colors = d3.scale.log()
-      .domain(d3.extent(json, function(d) { return d.selectionCount }))
-      .interpolate(d3.interpolateHcl)
-      .range([d3.rgb("#f84545"), d3.rgb("#720000")]);
+  console.log(json);
 
-    // update each bar of the bar chart
-    var svg = d3.select("#barchart").select("svg")
-    var barchart = svg.selectAll("rect").data(json);
+  // remove any text that's already appended to barplot
+  d3.select("#barchart").selectAll("text").remove();
 
-    // set the domain of the x axis and redraw axis
-    var x = d3.scale.log()
-      .domain(d3.extent(json, function(d) { 
-        return d.selectionCount }))
-      .range([0, width]);
+  var colors = d3.scale.log()
+    .domain(d3.extent(json, function(d) { return d.selectionCount }))
+    .interpolate(d3.interpolateHcl)
+    .range([d3.rgb("#f84545"), d3.rgb("#720000")]);
 
-    barchart.transition()
-      .duration(1000)
-        .attr("width", function(d) {return x(d.selectionCount)})
-        .attr("height", function(d, i) { return barHeight-1});
-        
-        var bar = barchart.enter().append("g")
+  // set the domain of the x axis and redraw axis
+  var x = d3.scale.log()
+    .domain(d3.extent(json, function(d) { 
+      return d.selectionCount }))
+    .range([0, width]);
 
-          bar.append("rect")
-            .attr("x", margin.left)
-            .attr("y", function(d, i) {return i * barHeight;})
-            .on("click", function(d) {
-              barChartClick(d);
-            }) 
-            .attr("fill", function(d) {
-              return colors(d.selectionCount)
-            })
-          .transition()
-            .duration(1000)
-            .attr("width", function(d) {return x(d.selectionCount)})
-            .attr("height", function(d, i) { return barHeight-1 });
-     
-         bar.append("text")
-            .attr("x", 5)
-            .attr("y", function(d, i) {return i * barHeight + 15;})
-            .text(function(d) {return d.selectionString;})
-            .style("font-size", "10px")
-            .on("click", function(d) {
-              barChartClick(d);
-            }); 
+  // update each bar of the bar chart
+  var svg = d3.select("#barchart").select("svg")
+  var barchart = svg.selectAll("rect").data(json, function(d) {
+    return dataKey(d);
+  });
 
-        barchart.exit()
-          .transition(1000)
-          .remove();
+  barchart.transition()
+    .duration(1000)
+      .attr("width", function(d) {return x(d.selectionCount)})
+      .attr("height", function(d, i) { return barHeight-1});
+      
+      var bar = barchart.enter().append("g")
+
+        bar.append("rect")
+          .attr("x", margin.left)
+          .attr("y", function(d, i) {return i * barHeight;})
+          .on("click", function(d) {
+            barChartClick(d);
+          }) 
+          .attr("fill", function(d) {
+            return colors(d.selectionCount)
+          })
+        .transition()
+          .duration(1000)
+          .attr("width", function(d) {return x(d.selectionCount)})
+          .attr("height", function(d, i) { return barHeight-1 });
+   
+       bar.append("text")
+          .attr("x", 5)
+          .attr("y", function(d, i) {return i * barHeight + 15;})
+          .text(function(d) {return d.selectionString;})
+          .style("font-size", "10px")
+          .on("click", function(d) {
+            barChartClick(d);
+          }); 
+
+      barchart.exit()
+        .transition(1000)
+        .remove();
   });
 };
 
 initializeBarchart();
 updateBarchart();
+
 
