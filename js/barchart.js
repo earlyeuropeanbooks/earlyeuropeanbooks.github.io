@@ -107,9 +107,8 @@ var updateBarchart = function() {
   });
 
   barchart.transition()
-    .duration(1000)
-      .attr("width", function(d) {return x(d.selectionCount)})
-      .attr("height", function(d, i) { return barHeight-1});
+    .attr("width", function(d) {return x(d.selectionCount)})
+    .attr("height", function(d, i) { return barHeight-1});
       
       var bar = barchart.enter().append("g")
 
@@ -122,8 +121,6 @@ var updateBarchart = function() {
           .attr("fill", function(d) {
             return colors(d.selectionCount)
           })
-        .transition()
-          .duration(1000)
           .attr("width", function(d) {return x(d.selectionCount)})
           .attr("height", function(d, i) { return barHeight-1 });
    
@@ -137,7 +134,6 @@ var updateBarchart = function() {
           }); 
 
       barchart.exit()
-        .transition(1000)
         .remove();
   });
 };
