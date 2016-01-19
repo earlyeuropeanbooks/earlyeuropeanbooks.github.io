@@ -18,6 +18,18 @@ var xAxis = d3.svg.axis()
   .tickSize(-height - margin.bottom);
 
 
+var menu = d3.select("#menu select")
+  .on("change", function() {
+    updateBarchart();
+    
+    // reset the opacity of all circles on the map
+    // to their original values 
+    d3.selectAll(".mapPoint")
+      .style("stroke-opacity", ".5")
+      .style("fill-opacity", "0.2");    
+  });
+
+
 var initializeBarchart = function() {
   var svg = d3.select("#barchart").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -29,8 +41,6 @@ var initializeBarchart = function() {
   svg.append("g")
     .attr("class", "y axis")
 
-  var menu = d3.select("#menu select")
-    .on("change", updateBarchart);
 };
 
 
@@ -46,15 +56,16 @@ var barChartClick = function(d) {
   var selectionId = d.selectionId;
 
   // remove opacity from all records
-  d3.select("#map").selectAll("path")
-    .style("opacity", ".01");
+  d3.selectAll(".mapPoint")
+    .style("stroke-opacity", "0.0")
+    .style("fill-opacity", "0.0");
   
   // then select all records with the given selection id
   // for the given selection type
   var classSelector = "." + selectionType + "Id" + String(selectionId);
-  console.log(classSelector);
   d3.select("#map").selectAll(classSelector)
-    .style("opacity", ".8");
+    .style("stroke-opacity", ".5")
+    .style("fill-opacity", ".2");
 
 };
 
@@ -74,8 +85,6 @@ var updateBarchart = function() {
   // so retrieve that json
   d3.json(dropdownVal, function(error, json) {
     if (error) return console.warn(error);
-
-  console.log(json);
 
   // remove any text that's already appended to barplot
   d3.select("#barchart").selectAll("text").remove();
@@ -135,5 +144,4 @@ var updateBarchart = function() {
 
 initializeBarchart();
 updateBarchart();
-
 
