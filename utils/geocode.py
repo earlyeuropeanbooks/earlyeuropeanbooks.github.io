@@ -172,6 +172,15 @@ def write_map_location_json():
         language_string = sr[7] 
         classification_string = sr[8] 
 
+        # if the book id isn't numeric, this row is misinterpreted, so don't
+        # persist the record
+        try:
+          float(id)
+        except:
+          print "couldn't persist id:", "".join(l for l in 
+          " ".join(id.split()) if ord(l) < 128)
+          continue
+
         # we don't persist empty classification or language strings so try/except
         try:
           language_id = language_string_to_id[language_string]
