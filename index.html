@@ -75,9 +75,12 @@
   <!-- Handlebars templating -->
   <script id="entry-template" type="text/x-handlebars-template">
     <div class="entry">
-      <h1>{{title}}</h1>
+      <h3>{{title}}</h3>
+      <p>{{author}}</p>
+      <p>{{language}}</p>
+      <p>{{pubLoc}}</p>
+      <p>{{pubDate}}</p>
       <div class="templateBody">
-        {{templateBody}}
       </div>
     </div>
   </script>
@@ -92,8 +95,6 @@
   <!-- Load EEB Map JS and CSS -->
   <script src="/js/eeb-map.js"></script>
   <link rel="stylesheet" href="/css/eeb-map.css">
-
-
 
 </html>
 
