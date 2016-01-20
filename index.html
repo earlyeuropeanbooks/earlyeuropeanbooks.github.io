@@ -17,10 +17,6 @@
     <!-- Load D3.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js"></script>
 
-    <!-- Load EEB Map JS and CSS -->
-    <script src="/js/eeb-map.js"></script>
-    <link rel="stylesheet" href="/css/eeb-map.css">
-
     <!-- Load Handlebars -->
     <script src="/js/handlebars.min-latest.js"></script>
 
@@ -86,22 +82,18 @@
     </div>
   </script>
 
-  <script>
-  // initialize template
-  var source = $("#entry-template").html();
-  var template = Handlebars.compile(source);
-
-  // populate template contents
-  var templateData = {title: "My New Post", templateBody: "This is my first post!"};
-
-  // append template content to DOM
-  $(".modal-body").append(template(templateData)); 
-  </script>
-
- 
 
   <!-- Barchart JS -->
   <script src="/js/barchart.js"></script>
+
+  <!-- Populate Modal Template -->
+  <script src="/js/populateModalTemplate.js"></script>
+
+  <!-- Load EEB Map JS and CSS -->
+  <script src="/js/eeb-map.js"></script>
+  <link rel="stylesheet" href="/css/eeb-map.css">
+
+
 
 </html>
 
