@@ -35,6 +35,12 @@ with codecs.open(sys.argv[1], 'r', 'latin1') as f:
     except IndexError:
       pass
 
+    # remove quote marks from fields
+    short_title = short_title.replace('"','')
+    author = author.replace('"','')
+    standardized_place = standardized_place.replace('"','')
+    pub_year = pub_year.replace('"','')
+
     book_template_json = {
       "title": short_title,
       "id": id,
@@ -48,7 +54,7 @@ with codecs.open(sys.argv[1], 'r', 'latin1') as f:
     try:
       float(id)
     except:
-      print "".join(i for i in " ".join(id.split()) if ord(i) < 128)
+      print "couldn't process record id", "".join(i for i in " ".join(id.split()) if ord(i) < 128)
       continue   
 
     with open("../json/book_template_json/" + 
