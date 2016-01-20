@@ -10,7 +10,6 @@ var mapPointClick = function() {
   var clickedNode = $(this);
   var selectedNodeClass = clickedNode["0"]["options"]["className"];
   var selectedBookId = selectedNodeClass.split("bookId")[1].split(" ")[0];
-  console.log(selectedNodeClass, selectedBookId); 
 
   // retrieve the data for the given book so we can fill out the template
   d3.json("/json/book_template_json/" + 

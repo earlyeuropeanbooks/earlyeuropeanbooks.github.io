@@ -64,8 +64,6 @@ var barChartClick = function(d) {
   // determine the id of the bar clicked
   var selectionId = d.selectionId;
 
-  console.log(selectionType, selectionId);
-
   // remove opacity from all records
   // and remove their pointer events to make them unclickable
   d3.selectAll(".mapPoint")
@@ -76,8 +74,6 @@ var barChartClick = function(d) {
   // then select all records with the given selection id
   // for the given selection type
   var classSelector = "." + selectionType + "Id" + String(selectionId);
-
-  console.log('classSelector', classSelector);
 
   // restore opacity and pointer events for the selected objects
   d3.select("#map").selectAll(classSelector)
