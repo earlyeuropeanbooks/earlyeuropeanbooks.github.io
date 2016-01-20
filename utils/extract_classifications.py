@@ -1,13 +1,13 @@
 from collections import defaultdict, OrderedDict
 import codecs, sys, json
 
-# read in ../data/EEB-1-7.txt
+# read in ../data/eeb-1-7.txt
 
 ##############################
 # write classifications json #
 ##############################
 
-with codecs.open(sys.argv[1], 'r', 'latin1') as f:
+with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
   rows = f.readlines()
 
   classifications = defaultdict(int)

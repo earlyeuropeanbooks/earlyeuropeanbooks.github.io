@@ -1,6 +1,6 @@
 import codecs, sys, json, os
 
-# read in ../data/EEB-1-7.txt
+# read in ../data/eeb-1-7-utf16.txt
 # and write book title, author, pub loc and pub date
 # to a json file with the given book's id as the file
 # name
@@ -12,7 +12,7 @@ if not os.path.exists("../json/book_template_json"):
 # write book template json #
 ############################
 
-with codecs.open(sys.argv[1], 'r', 'latin1') as f:
+with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
   rows = f.readlines()
 
   for c, r in enumerate(rows[1:-1]):

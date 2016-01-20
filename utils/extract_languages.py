@@ -1,7 +1,7 @@
 from collections import defaultdict
 import codecs, sys, json
 
-# read in ../data/EEB-1-7.txt
+# read in ../data/eeb-1-7-utf16.txt
 
 # set a minimum number of observations we need to have per language
 # in order to persist that language to disk
@@ -11,7 +11,7 @@ minimum_observations = 10
 # write languages json #
 ########################
 
-with codecs.open(sys.argv[1], 'r', 'latin1') as f:
+with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
   rows = f.readlines()
 
   languages = defaultdict(int)
