@@ -7,7 +7,6 @@ function initialize() {
 };
 
 
-
 // read in geojson and plot that data
 function visualizeMap(json) {
 
@@ -55,13 +54,6 @@ function visualizeMap(json) {
 
   // add the geoJson with data to the map
   L.geoJson(json, {style: style}).addTo(map);
-
-  var onClick = function() {
-    var a = $(this);
-    console.log(a["0"]["options"]["className"]); 
-    $('#myModal').modal('show');;
-  };
-
   
   // retrieve book location json and add to the map
   d3.json("/json/book_locations.json", function(error, bookLocationJson) {
@@ -81,7 +73,7 @@ function visualizeMap(json) {
             " bookId" + String(bookId) + 
             " classificationId" + String(classificationId) +
             " languageId" + String(languageId) 
-      }).addTo(map).on('click', onClick);;
+      }).addTo(map).on('click', mapPointClick);;
   
     }; 
   });
