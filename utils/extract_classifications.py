@@ -29,16 +29,16 @@ with codecs.open(sys.argv[1], 'r', 'latin1') as f:
       classification_three = rs[10]
       copy_location = rs[11] 
 
-      classifications[classification_one] += 1
-
       # if the book id isn't numeric, this row is misinterpreted, so don't
-      # persist the record
+      # count the record's classification towards classification counts
       try:
         float(id)
       except:
         print "couldn't process id:", "".join(l for l in 
         " ".join(id.split()) if ord(l) < 128)
         continue
+
+      classifications[classification_one] += 1
 
     except IndexError:
       pass
