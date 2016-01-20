@@ -31,6 +31,15 @@ with codecs.open(sys.argv[1], 'r', 'latin1') as f:
 
       classifications[classification_one] += 1
 
+      # if the book id isn't numeric, this row is misinterpreted, so don't
+      # persist the record
+      try:
+        float(id)
+      except:
+        print "couldn't process id:", "".join(l for l in 
+        " ".join(id.split()) if ord(l) < 128)
+        continue
+
     except IndexError:
       pass
 
@@ -56,14 +65,17 @@ with codecs.open(sys.argv[1], 'r', 'latin1') as f:
     # trim excessive classifications
     classification = classification.split("(")[0]
 
-    # persist the selection group (classification), the string value the current observation
-    # has for that group (e.g. "Military handbooks"), the numeric id for that value,
-    # and the count of times the current string value occurs in the corpus. Also, save
-    # the raw form of the classification string
+    """persist the selection group (classification), the string value 
+    the current observation has for that group (e.g. "Military 
+    handbooks"), the numeric id for that value, and the count of times 
+    the current string value occurs in the corpus. Also, save the raw 
+    form of the classification string"""
 
-    # selection string will be displayed to user, selection string raw indicates the selection
-    # string as it exists in the spreadsheet, and is only persisted for mapping selection strings
-    # back to their ids
+    """selection string will be displayed to user, selection string 
+    raw indicates the selection string as it exists in the 
+    spreadsheet, and is only persisted for mapping selection strings 
+    back to their ids"""
+
     classification_dict = {
         "selectionGroup": "classification",
         "selectionString": classification,
