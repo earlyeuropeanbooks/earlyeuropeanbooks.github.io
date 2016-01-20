@@ -18,7 +18,7 @@ var mapPointClick = function() {
     if (error) return console.warn(error);
 
     // populate template contents
-    var templateData = {title: json.title, templateBody: "This is my first post!"};
+    var templateData = {title: json.title, author: json.author, language: json.language, pubLoc: json.pub_loc, pubDate: json.pub_year};
 
     // remove the extant form contents (if any)
     $(".modal-body").find(".entry").remove();
