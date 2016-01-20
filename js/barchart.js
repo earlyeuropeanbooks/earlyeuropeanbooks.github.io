@@ -22,11 +22,13 @@ var menu = d3.select("#menu select")
   .on("change", function() {
     updateBarchart();
     
-    // reset the opacity of all circles on the map
-    // to their original values 
+    // reset the opacity of all circles on the map to their 
+    // original values and restore pointer events to make all 
+    // circles clickable 
     d3.selectAll(".mapPoint")
       .style("stroke-opacity", ".5")
-      .style("fill-opacity", "0.2");    
+      .style("fill-opacity", "0.2")
+      .style("pointer-events", "auto");    
   });
 
 
@@ -62,17 +64,26 @@ var barChartClick = function(d) {
   // determine the id of the bar clicked
   var selectionId = d.selectionId;
 
+  console.log(selectionType, selectionId);
+
   // remove opacity from all records
+  // and remove their pointer events to make them unclickable
   d3.selectAll(".mapPoint")
     .style("stroke-opacity", "0.0")
-    .style("fill-opacity", "0.0");
+    .style("fill-opacity", "0.0")
+    .style("pointer-events", "none");
   
   // then select all records with the given selection id
   // for the given selection type
   var classSelector = "." + selectionType + "Id" + String(selectionId);
+
+  console.log('classSelector', classSelector);
+
+  // restore opacity and pointer events for the selected objects
   d3.select("#map").selectAll(classSelector)
     .style("stroke-opacity", ".5")
-    .style("fill-opacity", ".2");
+    .style("fill-opacity", ".2")
+    .style("pointer-events", "auto");
 
 };
 
