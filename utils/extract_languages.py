@@ -1,3 +1,4 @@
+from collections import defaultdict
 import codecs, sys, json
 
 # read in ../data/EEB-1-7.txt
@@ -31,6 +32,15 @@ with codecs.open(sys.argv[1], 'r', 'latin1') as f:
       classification_two = rs[9]
       classification_three = rs[10]
       copy_location = rs[11] 
+
+      # if the book id isn't numeric, this row is misinterpreted, so don't
+      # add the record's language to our counts
+      try:
+        float(id)
+      except:
+        print "couldn't process id:", "".join(l for l in 
+        " ".join(id.split()) if ord(l) < 128)
+        continue
 
       languages[language] += 1
 
