@@ -1,4 +1,3 @@
-from collections import defaultdict, OrderedDict
 import codecs, sys, json
 
 # read in ../data/EEB-1-7.txt
