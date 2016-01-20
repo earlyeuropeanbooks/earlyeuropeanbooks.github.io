@@ -3,7 +3,7 @@ import urllib2, codecs, sys, re, os, urlparse, string, json, random
 
 # this script takes as input a matrix such as ../data/EEB-1-7.txt
 # and generates output in the json/ directory
-# usage: python geocode.py "../data/EEB-1-7.txt" 
+# usage: python geocode.py "../data/eeb-1-7-utf16.txt" 
 
 
 ################
@@ -67,7 +67,7 @@ def retrieve_locations():
   """Read in eeb spreadsheet and retrieve location json for each location"""
   locations = []
 
-  with codecs.open(sys.argv[1], 'r', 'latin1') as f:
+  with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
     rows = f.readlines()
     for r in rows[1:-1]:
       try:
@@ -161,7 +161,7 @@ def write_map_location_json():
   book_locations_json = []
   locations_counter = defaultdict(int)
 
-  with codecs.open(sys.argv[1], 'r', 'latin1') as f:
+  with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
     rows = f.readlines()
     for r in rows[1:-1]:
       try:
