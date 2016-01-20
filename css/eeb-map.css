@@ -24,3 +24,7 @@ body {
   padding: 15px 0 0 0;
   white-space: nowrap;
 }
+
+.modal-content .entry {
+  line-height: 13px;
+}
