@@ -1,6 +1,6 @@
 // retrieve geojson with d3 and call the plotting function
 function initialize() {
-  d3.json("/json/europeanCountries.geojson", function(error, json) {
+  d3.json("/json/geojson/europeanCountries.geojson", function(error, json) {
     if (error) return console.warn(error);
     visualizeMap(json);
   }); 
