@@ -7,6 +7,7 @@ function initialize() {
 };
 
 
+
 // read in geojson and plot that data
 function visualizeMap(json) {
 
@@ -52,13 +53,13 @@ function visualizeMap(json) {
   }
 
 
-
   // add the geoJson with data to the map
   L.geoJson(json, {style: style}).addTo(map);
 
   var onClick = function() {
     var a = $(this);
     console.log(a["0"]["options"]["className"]); 
+    $('#myModal').modal('show');;
   };
 
   
@@ -80,7 +81,7 @@ function visualizeMap(json) {
             " bookId" + String(bookId) + 
             " classificationId" + String(classificationId) +
             " languageId" + String(languageId) 
-      }).addTo(map).on('mouseover', onClick);;
+      }).addTo(map).on('click', onClick);;
   
     }; 
   });
