@@ -4,20 +4,32 @@ var source = $("#entry-template").html();
 var template = Handlebars.compile(source);
 
 var mapPointClick = function() {
-  var a = $(this);
-  console.log(a["0"]["options"]["className"]); 
+  
+  // determine the book id that is represented by the circle the
+  // user has clicked on
+  var clickedNode = $(this);
+  var selectedNodeClass = clickedNode["0"]["options"]["className"];
+  var selectedBookId = selectedNodeClass.split("bookId")[1].split(" ")[0];
+  console.log(selectedNodeClass, selectedBookId); 
 
-  // populate template contents
-  var templateData = {title: "My New Post", templateBody: "This is my first post!"};
+  // retrieve the data for the given book so we can fill out the template
+  d3.json("/json/book_template_json/" + 
+    selectedBookId + "_template.json", function(error, json) {
+    if (error) return console.warn(error);
 
-  // remove the extant form contents (if any)
-  $(".modal-body").find(".entry").remove();
+    // populate template contents
+    var templateData = {title: json.title, templateBody: "This is my first post!"};
 
-  // append template content to DOM
-  $(".modal-body").append(template(templateData)); 
+    // remove the extant form contents (if any)
+    $(".modal-body").find(".entry").remove();
 
-  // make the modal visible 
-  $('#myModal').modal('show');;
+    // append template content to DOM
+    $(".modal-body").append(template(templateData)); 
+
+    // make the modal visible 
+    $('#myModal').modal('show');;
+
+  });
 };
 
 
