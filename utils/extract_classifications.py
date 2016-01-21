@@ -3,6 +3,10 @@ import codecs, sys, json
 
 # read in ../data/eeb-1-7.txt
 
+# set a minimum number of observations we need to have per classification
+# in order to persist that language to disk
+minimum_observations = 10
+
 ##############################
 # write classifications json #
 ##############################
@@ -56,6 +60,9 @@ with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
   clean_classifications = []
   for c2, k in enumerate(classifications):
     if not k:
+      continue
+
+    if classifications[k] < minimum_observations:
       continue
 
     classification = k.replace('"','').strip()
