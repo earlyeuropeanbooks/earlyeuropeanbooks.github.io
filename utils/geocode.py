@@ -1,3 +1,4 @@
+from __future__ import division
 from collections import defaultdict
 import urllib2, codecs, sys, re, os, urlparse, string, json, random
 
@@ -181,13 +182,15 @@ def write_map_location_json():
           " ".join(id.split()) if ord(l) < 128)
           continue
 
-        # we don't persist empty classification or language strings so try/except
+        # we don't persist empty classification 
+        # or language strings so try/except
         try:
           language_id = language_string_to_id[language_string]
         except KeyError:
           language_id = ''
 
-        # we don't persist empty classification strings or their ids, so try/except
+        # we don't persist empty classification strings 
+        # or their ids, so try/except
         try:
           classification_id = classification_string_to_id[classification_string]
         except KeyError:
@@ -224,7 +227,16 @@ def write_map_location_json():
               lat = lat + random.uniform(-perturb_limit, perturb_limit)
               lng = lng + random.uniform(-perturb_limit, perturb_limit)
 
-            book_locations_json.append( {"id":id, "lat":lat, "lng":lng, "classificationId": classification_id, "languageId": language_id} ) 
+            # to minimize json size, only record three decimal places
+            lat = int(lat*1000)/1000
+            lng = int(lng*1000)/1000
+
+            # to further reduce json size, coerce ids into integers
+            id = int(id)
+
+            book_locations_json.append( {"id":id, "lat":lat, 
+                "lng":lng, "classificationId": classification_id, 
+                "languageId": language_id} ) 
 
         except IOError:
           continue
