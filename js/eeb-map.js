@@ -9,17 +9,13 @@ var initializeMap = function() {
       zoom: 5
   });
 
-  console.log(map);
-
   // add map layer for black and white background
   map.addLayer(new L.tileLayer("http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}", {
-    maxZoom: 6,
+    maxZoom: 7,
     attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">' +
         'GIScience Research Group @ University of Heidelberg</a> &mdash; ' +
         'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }));
-
-  console.log(map);
 
   // add a map layer with the colored background tiles
   d3.json("/json/geojson/europeanCountries.geojson", function(error, json) {
@@ -53,8 +49,6 @@ var initializeMap = function() {
     L.geoJson(json, {style: style}).addTo(map);    
   });
 
-  console.log(map);
-
   // add the points to the populated map
   d3.json("/json/book_locations.json", function(error, bookLocationJson) {
     if (error) return console.warn(error);
@@ -79,8 +73,6 @@ var initializeMap = function() {
     };
   });
 
-  console.log(map);
- 
   // pass map into global "globalMap" object
   globalMap = map;
 };
