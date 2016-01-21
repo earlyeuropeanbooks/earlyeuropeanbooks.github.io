@@ -6,11 +6,11 @@ var margin = {top: 20, right: 20, bottom: 0, left: 210},
   height = $(window).height() - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
-  .range([0, width]);
+  .range([15, width]);
 
 var y = d3.scale.linear()
   .domain([0,1])  
-  .range([0, height]);
+  .range([15, height]);
 
 var xAxis = d3.svg.axis()
   .scale(x)
@@ -112,7 +112,7 @@ var updateBarchart = function() {
   var x = d3.scale.log()
     .domain(d3.extent(json, function(d) { 
       return d.selectionCount }))
-    .range([0, width]);
+    .range([15, width]);
 
   // update each bar of the bar chart
   var svg = d3.select("#barchart").select("svg")
