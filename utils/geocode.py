@@ -6,55 +6,59 @@ import urllib2, codecs, sys, re, os, urlparse, string, json, random
 # and generates output in the json/ directory
 # usage: python geocode.py "../data/eeb-1-7-utf16.txt" 
 
+# TODO: update 'perturbance' value as a function of the number of observations
+# we have for the given location, in order to make sure that cities with
+# one observation, e.g., position that observation directly on the geocoordinates
+# of the city 
 
 ################
 # url to ascii #
 ################
 
 def urlEncodeNonAscii(b):
-    return re.sub('[\x80-\xFF]', lambda c: '%%%02x' % ord(c.group(0)), b)
+  return re.sub('[\x80-\xFF]', lambda c: '%%%02x' % ord(c.group(0)), b)
 
 
 def fixurl(url):
-    # turn string into unicode
-    if not isinstance(url,unicode):
-        url = url.decode('utf-8')
+  # turn string into unicode
+  if not isinstance(url,unicode):
+    url = url.decode('utf-8')
 
-    # parse it
-    parsed = urlparse.urlsplit(url)
+  # parse it
+  parsed = urlparse.urlsplit(url)
 
-    # divide the netloc further
-    userpass,at,hostport = parsed.netloc.rpartition('@')
-    user,colon1,pass_ = userpass.partition(':')
-    host,colon2,port = hostport.partition(':')
+  # divide the netloc further
+  userpass,at,hostport = parsed.netloc.rpartition('@')
+  user,colon1,pass_ = userpass.partition(':')
+  host,colon2,port = hostport.partition(':')
 
-    # encode each component
-    scheme = parsed.scheme.encode('utf-8')
-    user = urllib2.quote(user.encode('utf-8'))
-    colon1 = colon1.encode('utf-8')
-    pass_ = urllib2.quote(pass_.encode('utf-8'))
-    at = at.encode('utf-8')
-    host = host.encode('idna')
-    colon2 = colon2.encode('utf-8')
-    port = port.encode('utf-8')
-    path = '/'.join(  # could be encoded slashes!
-        urllib2.quote(urllib2.unquote(pce).encode('utf-8'),'')
-        for pce in parsed.path.split('/')
-    )
-    query = urllib2.quote(urllib2.unquote(parsed.query).encode('utf-8'),'=&?/')
-    fragment = urllib2.quote(urllib2.unquote(parsed.fragment).encode('utf-8'))
+  # encode each component
+  scheme = parsed.scheme.encode('utf-8')
+  user = urllib2.quote(user.encode('utf-8'))
+  colon1 = colon1.encode('utf-8')
+  pass_ = urllib2.quote(pass_.encode('utf-8'))
+  at = at.encode('utf-8')
+  host = host.encode('idna')
+  colon2 = colon2.encode('utf-8')
+  port = port.encode('utf-8')
+  path = '/'.join(  # could be encoded slashes!
+    urllib2.quote(urllib2.unquote(pce).encode('utf-8'),'')
+    for pce in parsed.path.split('/')
+  )
+  query = urllib2.quote(urllib2.unquote(parsed.query).encode('utf-8'),'=&?/')
+  fragment = urllib2.quote(urllib2.unquote(parsed.fragment).encode('utf-8'))
 
-    # put it back together
-    netloc = ''.join((user,colon1,pass_,at,host,colon2,port))
-    return urlparse.urlunsplit((scheme,netloc,path,query,fragment))
+  # put it back together
+  netloc = ''.join((user,colon1,pass_,at,host,colon2,port))
+  return urlparse.urlunsplit((scheme,netloc,path,query,fragment))
 
 
 def iriToUri(iri):
-    parts= urlparse.urlparse(iri)
-    return urlparse.urlunparse(
-        part.encode('idna') if parti==1 else urlEncodeNonAscii(part.encode('utf-8'))
-        for parti, part in enumerate(parts)
-    )
+  parts= urlparse.urlparse(iri)
+  return urlparse.urlunparse(
+    part.encode('idna') if parti==1 else urlEncodeNonAscii(part.encode('utf-8'))
+    for parti, part in enumerate(parts)
+  )
 
 #############################
 # ping google geocoding api #
@@ -180,6 +184,13 @@ def write_map_location_json():
   # by the maximum observations per location
   selection_json = {"classification": defaultdict(list), "language": defaultdict(list)}
 
+  # create another counter that will count the number of observations for each location
+  # for each selection id for each selection occurs. We don't want to plot 10,000 
+  # observations with language "French" from Paris, because this makes elements
+  # unclickable and oversaturates the DOM
+  selection_json_counter = {"classification": defaultdict(lambda: defaultdict(int)),
+      "language": defaultdict(lambda: defaultdict(int))}
+
   with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
     rows = f.readlines()
     for r in rows[1:-1]:
@@ -252,16 +263,31 @@ def write_map_location_json():
                 "lng":lng, "classificationId": classification_id, 
                 "languageId": language_id}
 
+            # check to make sure we haven't reached the maximum
+            # number of observations for the current selection in the current
+            # city
+            selection_json_counter["classification"][classification_id][location_id] += 1
+            selection_json_counter["language"][language_id][location_id] += 1
+
             # when a user clicks on a bar of the barplot, we want to 
             # plot all records with the given language or classification
             # id. For example, if a user clicks on "Culinary arts", we want
-            # to plot all records with culinary arts books, so build up
+            # to plot the records with culinary arts books, so build up
             # a dictionary for each selection id of each selection group
             # [currently limited to a book's classification or language]
-            selection_json["classification"][classification_id].append(
-                book_location_dict)
-            selection_json["language"][language_id].append(
-                book_location_dict)
+
+            # before adding the current observation to its selection json,
+            # make sure that we haven't already recorded the maximum
+            # number of observations for the current location
+            if (selection_json_counter["classification"][classification_id][location_id] <
+                max_observations_per_location):
+                selection_json["classification"][classification_id].append(
+                    book_location_dict)
+        
+            if (selection_json_counter["language"][language_id][location_id] <
+                max_observations_per_location):
+                selection_json["language"][language_id].append(
+                    book_location_dict)
 
             # check to see if we've already added the maximum number
             # of observations for this location to the initial page load json
