@@ -46,9 +46,11 @@ var initializeBarchart = function() {
 };
 
 
-// on click of bar chart update the opacity of 
-// circles on the plot
 var barChartClick = function(d) {
+  // on click of bar chart, remove opacity of all 
+  // circles plotted on page load, then add the points
+  // that correspond to the selection type {classification,
+  // language} and the selected id that the user selected 
 
   // use barId + d.selectionId key to increase opacity
   // of all but selected bars
@@ -57,6 +59,16 @@ var barChartClick = function(d) {
   d3.select("#barId" + d.selectionId)
     .style("opacity", "1");
 
+  // remove opacity from all records
+  // and remove their pointer events to make them unclickable
+  d3.selectAll(".mapPoint")
+    .style("stroke-opacity", "0.0")
+    .style("fill-opacity", "0.0")
+    .style("pointer-events", "none"); 
+
+  // remove any points that have been added by previous bar clicks
+  d3.selectAll(".currentSelectionPoint").remove();
+
   // determine the kind of selection currently being plotted
   // e.g. classification
   var selectionType = d.selectionGroup;
@@ -64,24 +76,18 @@ var barChartClick = function(d) {
   // determine the id of the bar clicked
   var selectionId = d.selectionId;
 
-  // remove opacity from all records
-  // and remove their pointer events to make them unclickable
-  d3.selectAll(".mapPoint")
-    .style("stroke-opacity", "0.0")
-    .style("fill-opacity", "0.0")
-    .style("pointer-events", "none");
-  
-  // then select all records with the given selection id
-  // for the given selection type
-  var classSelector = "." + selectionType + "Id" + String(selectionId);
+  // determine the path to the json that contains all points
+  // for the selected bar
+  var selectionJsonPath = "/json/" + selectionType + "_selections/" +
+    selectionType + "_" + selectionId + ".json";
 
-  // restore opacity and pointer events for the selected objects
-  d3.select("#map").selectAll(classSelector)
-    .style("stroke-opacity", ".5")
-    .style("fill-opacity", ".2")
-    .style("pointer-events", "auto");
-
+  // add those points to the plot
+  d3.json(selectionJsonPath, function(error, json) {
+    if (error) return console.warn(error);
+    addMapPoints(json);
+  }); 
 };
+
 
 var dataKey = function(d) {
   return d.selectionGroup + d.selectionId;
@@ -89,6 +95,13 @@ var dataKey = function(d) {
 
 
 var updateBarchart = function() {
+
+  // when the user clicks on the dropdown
+  // to change the barchart, remove any points
+  // that were added by virtue of the user clicking
+  // on one of the bars, or else the map may become
+  // oversaturated with points
+  d3.selectAll(".currentSelectionPoint").remove();
 
   // on request to update the bar chart, 
   // check to see which value is selected in the dropdown
@@ -100,61 +113,60 @@ var updateBarchart = function() {
   d3.json(dropdownVal, function(error, json) {
     if (error) return console.warn(error);
 
-  // remove any text that's already appended to barplot
-  d3.select("#barchart").selectAll("text").remove();
+    // remove any text that's already appended to barplot
+    d3.select("#barchart").selectAll("text").remove();
 
-  var colors = d3.scale.log()
-    .domain(d3.extent(json, function(d) { return d.selectionCount }))
-    .interpolate(d3.interpolateHcl)
-    .range([d3.rgb("#f84545"), d3.rgb("#720000")]);
+    var colors = d3.scale.log()
+      .domain(d3.extent(json, function(d) { return d.selectionCount }))
+      .interpolate(d3.interpolateHcl)
+      .range([d3.rgb("#f84545"), d3.rgb("#720000")]);
 
-  // set the domain of the x axis and redraw axis
-  var x = d3.scale.log()
-    .domain(d3.extent(json, function(d) { 
-      return d.selectionCount }))
-    .range([15, width]);
+    // set the domain of the x axis and redraw axis
+    var x = d3.scale.log()
+      .domain(d3.extent(json, function(d) { 
+        return d.selectionCount }))
+      .range([15, width]);
 
-  // update each bar of the bar chart
-  var svg = d3.select("#barchart").select("svg")
-  var barchart = svg.selectAll("rect").data(json, function(d) {
-    return dataKey(d);
-  });
+    // update each bar of the bar chart
+    var svg = d3.select("#barchart").select("svg")
+    var barchart = svg.selectAll("rect").data(json, function(d) {
+      return dataKey(d);
+    });
 
-  barchart.transition()
-    .attr("width", function(d) {return x(d.selectionCount)})
-    .attr("height", function(d, i) { return barHeight-1});
-      
-      var bar = barchart.enter().append("g")
+    barchart.transition()
+      .attr("width", function(d) {return x(d.selectionCount)})
+      .attr("height", function(d, i) { return barHeight-1});
+        
+    var bar = barchart.enter().append("g")
 
-        bar.append("rect")
-          .attr("id", function(d, i) {return "barId" + d.selectionId})
-          .attr("x", margin.left)
-          .attr("y", function(d, i) {return i * barHeight;})
-          .on("click", function(d) {
-            barChartClick(d);
-          }) 
-          .attr("fill", function(d) {
-            return colors(d.selectionCount)
-          })
-          .attr("width", function(d) {return x(d.selectionCount)})
-          .attr("height", function(d, i) { return barHeight-1 })
-          .style("cursor","pointer");
-   
-       bar.append("text")
-          .attr("x", 5)
-          .attr("y", function(d, i) {return i * barHeight + 15;})
-          .text(function(d) {return d.selectionString;})
-          .style("font-size", "10px")
-          .on("click", function(d) {
-            barChartClick(d);
-          })
-          .style("cursor","pointer"); 
+      bar.append("rect")
+        .attr("id", function(d, i) {return "barId" + d.selectionId})
+        .attr("x", margin.left)
+        .attr("y", function(d, i) {return i * barHeight;})
+        .on("click", function(d) {
+          barChartClick(d);
+        }) 
+        .attr("fill", function(d) {
+          return colors(d.selectionCount)
+        })
+        .attr("width", function(d) {return x(d.selectionCount)})
+        .attr("height", function(d, i) { return barHeight-1 })
+        .style("cursor","pointer");
+ 
+     bar.append("text")
+        .attr("x", 5)
+        .attr("y", function(d, i) {return i * barHeight + 15;})
+        .text(function(d) {return d.selectionString;})
+        .style("font-size", "10px")
+        .on("click", function(d) {
+          barChartClick(d);
+        })
+        .style("cursor","pointer"); 
 
-      barchart.exit()
-        .remove();
+    barchart.exit()
+      .remove();
   });
 };
 
 initializeBarchart();
 updateBarchart();
-
