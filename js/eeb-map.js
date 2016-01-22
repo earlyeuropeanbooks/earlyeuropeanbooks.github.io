@@ -50,7 +50,7 @@ var initializeMap = function() {
   });
 
   // add the points to the populated map
-  d3.json("/json/book_locations.json", function(error, bookLocationJson) {
+  d3.json("/json/page_load_book_locations.json", function(error, bookLocationJson) {
     if (error) return console.warn(error);
    
     // retrieve book location json and add to the map
@@ -76,3 +76,30 @@ var initializeMap = function() {
   // pass map into global "globalMap" object
   globalMap = map;
 };
+
+// function to add points to an extant map
+// currentSelectionPoint indicates this point was not part of 
+// the initial page load but was added after the user selected a bar
+var addMapPoints = function(json) {
+  // retrieve book location json and add to the map
+  for (i = 0; i < json.length; i++) {
+
+    // manually add marker point to map for the current location
+    var locationLat = json[i].lat;
+    var locationLng = json[i].lng;
+    var bookId = json[i].id;
+    var classificationId = json[i].classificationId;
+    var languageId = json[i].languageId;
+
+    // add a special class to encode the fact that the current circle is 
+    // a member of the currently selected dropdown val {classification, location}
+    // and has the selection id that corresponds to the bar the user has clicked
+    L.circleMarker([locationLat, locationLng], {color: "#c00000", radius: 4, 
+        className: "mapPoint" +
+          " bookId" + String(bookId) + 
+          " classificationId" + String(classificationId) +
+          " languageId" + String(languageId) +
+          " " + "currentSelectionPoint"
+    }).addTo(globalMap).on('click', mapPointClick);;
+  }; 
+}; 
