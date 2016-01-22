@@ -17,7 +17,6 @@ var xAxis = d3.svg.axis()
   .orient("top")
   .tickSize(-height - margin.bottom);
 
-
 var menu = d3.select("#menu select")
   .on("change", function() {
     updateBarchart();
@@ -42,7 +41,6 @@ var initializeBarchart = function() {
 
   svg.append("g")
     .attr("class", "y axis")
-
 };
 
 
@@ -86,6 +84,42 @@ var barChartClick = function(d) {
     if (error) return console.warn(error);
     addMapPoints(json);
   }); 
+};
+
+
+var barChartMouseover = function(d) {
+  console.log(d);
+
+  // update the color of the moused-over bar
+  d3.select("#barId" + d.selectionId)
+    .style("fill", "#000000");
+
+  // update the color of that bar's corresponding points
+  // on the map
+  var selectedPoints = "." + d.selectionGroup + "Id" + d.selectionId; 
+  console.log(selectedPoints);
+
+  d3.selectAll(selectedPoints)
+    .style("fill", "#000000")
+    .style("stroke", "#000000")
+    .style("stroke-opacity", "0.5")
+    .style("fill-opacity", "0.4");
+};
+
+
+var barChartMouseout = function(d, colors) {
+  // restore the original color of the moused-over bar
+  d3.select("#barId" + d.selectionId)
+    .style("fill", colors(d.selectionCount));
+
+  // restore the original colors of that bar's corresponding points
+  // on the map
+  var selectedPoints = "." + d.selectionGroup + "Id" + d.selectionId; 
+  d3.selectAll(selectedPoints)
+    .style("fill", "#c00000")
+    .style("stroke", "#c00000")
+    .style("stroke-opacity", "0.5")
+    .style("fill-opacity", "0.2");
 };
 
 
@@ -143,9 +177,9 @@ var updateBarchart = function() {
         .attr("id", function(d, i) {return "barId" + d.selectionId})
         .attr("x", margin.left)
         .attr("y", function(d, i) {return i * barHeight;})
-        .on("click", function(d) {
-          barChartClick(d);
-        }) 
+        .on("click", function(d) { barChartClick(d); })
+        .on("mouseover", function(d) { barChartMouseover(d); })
+        .on("mouseout", function(d) { barChartMouseout(d, colors); })
         .attr("fill", function(d) {
           return colors(d.selectionCount)
         })
@@ -158,9 +192,9 @@ var updateBarchart = function() {
         .attr("y", function(d, i) {return i * barHeight + 15;})
         .text(function(d) {return d.selectionString;})
         .style("font-size", "10px")
-        .on("click", function(d) {
-          barChartClick(d);
-        })
+        .on("click", function(d) { barChartClick(d); })
+        .on("mouseover", function(d) { barChartMouseover(d); })
+        .on("mouseout", function(d) { barChartMouseout(d, colors); })
         .style("cursor","pointer"); 
 
     barchart.exit()
