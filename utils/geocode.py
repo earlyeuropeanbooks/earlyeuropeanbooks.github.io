@@ -64,6 +64,12 @@ def iriToUri(iri):
 if not os.path.exists("../json/locations"):
   os.makedirs("../json/locations")
 
+if not os.path.exists("../json/language_selections"):
+  os.makedirs("../json/language_selections")
+
+if not os.path.exists("../json/classification_selections"):
+  os.makedirs("../json/classification_selections")
+
 def retrieve_locations():
   """Read in eeb spreadsheet and retrieve location json for each location"""
   locations = []
@@ -160,7 +166,19 @@ def write_map_location_json():
   language_string_to_id = map_language_string_to_id()
 
   book_locations_json = []
+
+  # create a counter that can keep track of the number of times each location
+  # occurs in the dataset, so we can set a maximum number of observations
+  # for each location to limit DOM strain when loading the page initially
   locations_counter = defaultdict(int)
+
+  # for each selection type {classification, language} for each value
+  # in that selection, populate a full list of json so that we can populate
+  # all observations for that value within the selection (e.g. plot all
+  # books with classificationId == witchcraft, not just the subset that
+  # happen to have been included in the initial page json, which is limited
+  # by the maximum observations per location
+  selection_json = {"classification": defaultdict(list), "language": defaultdict(list)}
 
   with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
     rows = f.readlines()
@@ -205,12 +223,6 @@ def write_map_location_json():
         except KeyError:
           continue
 
-        # check to see if we've already written the maximum number
-        # of observations for this location
-        locations_counter[location_id] += 1
-        if locations_counter[location_id] > max_observations_per_location:
-          continue
-
         # try to retrieve the location's geocoordinates
         try:
           with open("../json/locations/" + str(location_id) + ".json") as f:
@@ -234,9 +246,30 @@ def write_map_location_json():
             # to further reduce json size, coerce ids into integers
             id = int(id)
 
-            book_locations_json.append( {"id":id, "lat":lat, 
+            # create the book level information we'll use to plot the 
+            # book on the map
+            book_location_dict = {"id":id, "lat":lat, 
                 "lng":lng, "classificationId": classification_id, 
-                "languageId": language_id} ) 
+                "languageId": language_id}
+
+            # when a user clicks on a bar of the barplot, we want to 
+            # plot all records with the given language or classification
+            # id. For example, if a user clicks on "Culinary arts", we want
+            # to plot all records with culinary arts books, so build up
+            # a dictionary for each selection id of each selection group
+            # [currently limited to a book's classification or language]
+            selection_json["classification"][classification_id].append(
+                book_location_dict)
+            selection_json["language"][language_id].append(
+                book_location_dict)
+
+            # check to see if we've already added the maximum number
+            # of observations for this location to the initial page load json
+            locations_counter[location_id] += 1
+            if locations_counter[location_id] > max_observations_per_location:
+              continue
+
+            book_locations_json.append(book_location_dict) 
 
         except IOError:
           continue
@@ -244,8 +277,20 @@ def write_map_location_json():
       except IndexError:
         continue
 
-  with open("../json/book_locations.json",'w') as book_locations_json_out:
+  # write the json to be used on initial page load
+  with open("../json/page_load_book_locations.json",'w') as book_locations_json_out:
     json.dump(book_locations_json, book_locations_json_out)
+
+  # write the full json for each selection id {0:n} of each possible selection
+  # {classification, language}
+  for selection_type_key in selection_json:
+    for selection_id_key in selection_json[selection_type_key]:
+      outgoing_json_file = ("../json/" + selection_type_key + "_selections/" +  
+          selection_type_key + "_" + str(selection_id_key) + ".json")
+
+      with open(outgoing_json_file, 'w') as selection_json_out:
+        json.dump(selection_json[selection_type_key][selection_id_key],
+            selection_json_out)
 
 
 if __name__ == "__main__":
