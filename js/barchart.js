@@ -76,7 +76,8 @@ var barchartClick = function(d) {
 
   // determine the path to the json that contains all points
   // for the selected bar
-  var selectionJsonPath = "/json/" + selectionType + "_selections/" +
+  var selectionJsonPath = "/json/user_selections/" + 
+    selectionType + "_selections/" +
     selectionType + "_" + selectionId + ".json";
 
   // add those points to the plot
