@@ -72,7 +72,6 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
-          <img src="//placehold.it/1000x600" class="img-responsive"> 
         </div>
       </div>
     </div>
@@ -81,6 +80,9 @@
   <!-- Handlebars templating -->
   <script id="entry-template" type="text/x-handlebars-template">
     <div class="entry">
+      <a href="http://gateway.proquest.com/openurl?url_ver=Z39.88-2004&res_dat=xri:eurobo:&rft_dat=xri:eurobo:rec:{{prqId}}">
+        <img src="//placehold.it/1000x600" class="img-responsive"> 
+      </a>
       <h4>{{title}}</h4>
       <p>{{author}}</p>
       <p>{{language}}</p>
@@ -98,7 +100,7 @@
   <script src="/js/populateModalTemplate.js"></script>
 
   <!-- Load EEB Map JS and CSS -->
-  <script src="/js/eeb-map.js"></script>
+  <script src="/js/eebMap.js"></script>
   <link rel="stylesheet" href="/css/eeb-map.css">
 
 </html>
