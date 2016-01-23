@@ -12,7 +12,7 @@ var mapPointClick = function() {
   var selectedBookId = selectedNodeClass.split("bookId")[1].split(" ")[0];
 
   // retrieve the data for the given book so we can fill out the template
-  d3.json("/json/book_template_json/" + 
+  d3.json("/json/book_templates/" + 
     selectedBookId + "_template.json", function(error, json) {
     if (error) return console.warn(error);
 
