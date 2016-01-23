@@ -5,8 +5,8 @@ import codecs, sys, json, os
 # to a json file with the given book's id as the file
 # name
 
-if not os.path.exists("../json/book_template_json"):
-  os.makedirs("../json/book_template_json")
+if not os.path.exists("../json/book_templates"):
+  os.makedirs("../json/book_templates")
 
 ############################
 # write book template json #
@@ -58,7 +58,7 @@ with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
       print "couldn't process record id", "".join(i for i in " ".join(id.split()) if ord(i) < 128)
       continue   
 
-    with open("../json/book_template_json/" + 
+    with open("../json/book_templates/" + 
       str(id) + "_template.json", 'w') as book_template_json_out:
       json.dump(book_template_json, book_template_json_out) 
 
