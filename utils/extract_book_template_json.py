@@ -46,9 +46,10 @@ with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
       "id": id,
       "author": author,
       "language": language,
-      "pub_year": pub_year,
+      "pubYear": pub_year,
       "imprint": imprint,
-      "pub_loc": standardized_place}  
+      "pubLoc": standardized_place,
+      "prqId": prq_unique_id}  
 
     # if the book's id isn't an integer, don't persist it  
     try:
