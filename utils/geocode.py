@@ -69,10 +69,10 @@ if not os.path.exists("../json/locations"):
   os.makedirs("../json/locations")
 
 if not os.path.exists("../json/language_selections"):
-  os.makedirs("../json/language_selections")
+  os.makedirs("../json/user_selections/language_selections")
 
 if not os.path.exists("../json/classification_selections"):
-  os.makedirs("../json/classification_selections")
+  os.makedirs("../json/user_selections/classification_selections")
 
 def retrieve_locations():
   """Read in eeb spreadsheet and retrieve location json for each location"""
@@ -311,7 +311,8 @@ def write_map_location_json():
   # {classification, language}
   for selection_type_key in selection_json:
     for selection_id_key in selection_json[selection_type_key]:
-      outgoing_json_file = ("../json/" + selection_type_key + "_selections/" +  
+      outgoing_json_file = ("../json/user_selections/" + 
+          selection_type_key + "_selections/" +  
           selection_type_key + "_" + str(selection_id_key) + ".json")
 
       with open(outgoing_json_file, 'w') as selection_json_out:
