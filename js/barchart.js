@@ -17,7 +17,6 @@ var xAxis = d3.svg.axis()
   .orient("top")
   .tickSize(-height - margin.bottom);
 
-
 var menu = d3.select("#menu select")
   .on("change", function() {
     updateBarchart();
@@ -42,11 +41,10 @@ var initializeBarchart = function() {
 
   svg.append("g")
     .attr("class", "y axis")
-
 };
 
 
-var barChartClick = function(d) {
+var barchartClick = function(d) {
   // on click of bar chart, remove opacity of all 
   // circles plotted on page load, then add the points
   // that correspond to the selection type {classification,
@@ -86,6 +84,20 @@ var barChartClick = function(d) {
     if (error) return console.warn(error);
     addMapPoints(json);
   }); 
+};
+
+
+var barchartMouseover = function(d) {
+  // update the color of the moused-over bar
+  d3.select("#barId" + d.selectionId)
+    .style("fill", "#720000");
+};
+
+
+var barchartMouseout = function(d, colors) {
+  // restore the original color of the moused-over bar
+  d3.select("#barId" + d.selectionId)
+    .style("fill", colors(d.selectionCount));
 };
 
 
@@ -143,9 +155,9 @@ var updateBarchart = function() {
         .attr("id", function(d, i) {return "barId" + d.selectionId})
         .attr("x", margin.left)
         .attr("y", function(d, i) {return i * barHeight;})
-        .on("click", function(d) {
-          barChartClick(d);
-        }) 
+        .on("click", function(d) { barchartClick(d); })
+        .on("mouseover", function(d) { barchartMouseover(d); })
+        .on("mouseout", function(d) { barchartMouseout(d, colors); })
         .attr("fill", function(d) {
           return colors(d.selectionCount)
         })
@@ -158,9 +170,9 @@ var updateBarchart = function() {
         .attr("y", function(d, i) {return i * barHeight + 15;})
         .text(function(d) {return d.selectionString;})
         .style("font-size", "10px")
-        .on("click", function(d) {
-          barChartClick(d);
-        })
+        .on("click", function(d) { barchartClick(d); })
+        .on("mouseover", function(d) { barchartMouseover(d); })
+        .on("mouseout", function(d) { barchartMouseout(d, colors); })
         .style("cursor","pointer"); 
 
     barchart.exit()
