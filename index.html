@@ -26,6 +26,9 @@
     <!-- Load Handlebars -->
     <script src="/js/handlebars.min-latest.js"></script>
 
+    <!-- Load Application CSS -->
+    <link rel="stylesheet" href="/css/eeb-map.css">
+
   </head>
 
   <body onload="initializeMap()">
@@ -34,7 +37,8 @@
       <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" 
+                  data-target="#bs-example-navbar-collapse-1">
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
@@ -68,7 +72,8 @@
   </body>
 
   <!-- Popup Modal Template -->
-  <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div id="myModal" class="modal fade" tabindex="-1" role="dialog" 
+      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
@@ -80,8 +85,11 @@
   <!-- Handlebars templating -->
   <script id="entry-template" type="text/x-handlebars-template">
     <div class="entry">
+      <!-- Format OpenURL request -->
       <a href="http://gateway.proquest.com/openurl?url_ver=Z39.88-2004&res_dat=xri:eurobo:&rft_dat=xri:eurobo:rec:{{prqId}}">
-        <img src="/img/placeholder.png" class="img-responsive"> 
+
+        <!-- set src="{{imagePath}}" to pull product images -->
+        <img src="/img/placeholder.png" class="img-responsive eeb-image"> 
       </a>
       <h4>{{title}}</h4>
       <p>{{author}}</p>
@@ -101,7 +109,6 @@
 
   <!-- Load EEB Map JS and CSS -->
   <script src="/js/eebMap.js"></script>
-  <link rel="stylesheet" href="/css/eeb-map.css">
 
 </html>
 
