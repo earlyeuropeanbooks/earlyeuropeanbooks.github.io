@@ -28,3 +28,8 @@ body {
 .modal-content .entry {
   line-height: 13px;
 }
+
+.eeb-image {
+  max-height: 500px;
+  margin: 0 auto;
+}
