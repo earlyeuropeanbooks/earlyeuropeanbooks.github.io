@@ -2,7 +2,7 @@
 var barHeight = 20;
 
 var margin = {top: 20, right: 20, bottom: 0, left: 245},
-  width = $(window).width() * 0.325 - margin.left - margin.right,
+  width = 466 - margin.left - margin.right,
   height = $(window).height() - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
