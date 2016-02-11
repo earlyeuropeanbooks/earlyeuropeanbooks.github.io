@@ -1,0 +1,82 @@
+/*=========================================
+General Print Stylesheet - v1.1
+Author: Sarah Davey
+Website: http://eurobo.chadwyck.com/
+Last Updated: 05.03.07
+=========================================*/
+
+body, table font {font-family: "Times New Roman", Times, serif;font-size: 12pt;line-height: 14pt;color: #000;background: #fff;}
+h1, h2, h3, h4, h5, h6 {color: #000;font-family: Arial,Helvetica,Verdana,Geneva,sans-serif!important;}
+#hiddenMessages2, #skip, #header, #quicksearchHolder, #mainnav, #footer, #copyright, #libbranding, #panelright, #page_nav, #durableHolder, .homeblurb a, #moresearches, .scopenote, .hidden, .selectlink, #sortoptions, #filter-wrapper, #tab, .hiddentext, #markresults, .number, .check, .resultDurableUrl, .toplink, .respagelinks, .fulltxtlinks, #defaultImageForm, #defaultImage, .hideopts, .showopts, #imageOpt, #docImage h2, #imageFormats, .imagepagelinks, .popUpLarge, #zoomHolder, #imgScale, .popUpHelp, #logout-MA, #folderOptions-MA, #top-section-MA a, #lightboxList ol li .number, #lightboxList ol li .check, #lightboxDivider, .add-note, .saved-result{display: none !important;}
+#wrapper, #content, #homecol1 img, #homecol2 img, #maincontent-home, #maincontent, #column, .column1, #som, #fullRecord, #page_image, #docImage img, #lightboxList{width: auto !important;margin: 0 !important;padding: 0 !important;border: none !important;float: none !important;background: #fff !important;color: #000 !important;}
+#pagecontent {margin: 0 5%;}
+/*search styles*/
+#searchform {padding: 0.5em 0 0 0;margin: 1em 0 1em 0;float: left;*float: none;}
+html:lang(en)>body #searchform {float: none;}
+.limitboxes {margin-left: 6em;border-bottom: 1px dotted #ACACAB;border-top: 1px dotted #ACACAB;padding: 0.5em 0 0.2em 0;width: 36.8em;margin-bottom: 0.5em;margin-top: 1em;clear: left;}
+.limitboxes label {float: none;font-weight: normal;margin: 0px;padding: 0;*width: 25em;}
+#keywordlimit {margin: 0 0 0 12.8em;}
+#keywordlimit label {float: none;font-weight: normal;font-size: 0.9em;*width: 1.1em;}
+#kwlimit {margin-top: 5px;}
+#srchfield, .archivefield, .archivefieldLong, #position, #firstuser, #sendmail, #citformat {margin: 0;padding: 0.5em 0.2em 0.5em 0.2em;clear: left;}
+label {float: left;color: #000000;width: 14em;margin: 3px;cursor: default;font-weight: bold;}
+input.field {width: 19em;}
+#pubdates fieldset, #physform fieldset, #special fieldset, #display fieldset, #eventdate fieldset, #entcontentlimit fieldset {border: 0;margin: 0;}
+#pubdates fieldset legend, #physform fieldset legend, #special fieldset legend, #display fieldset legend, #eventdate fieldset legend, #entcontentlimit fieldset legend {font-weight: bold;color: #000;padding: 0;margin: 0 0 0 -0.4em;}
+#pubdates, #physform, #special, #display, #eventdate, #entcontentlimit {margin: 0;padding: 0.5em 0.2em 0.5em 0.2em;clear: left;}
+.pubdates label {float: none;font-weight: normal;*width: 2em;}
+input.datebox {width: 3.1em;}
+.pubdates {padding: 0px;margin: -2em 0 0 13.6em;*margin: -1em 0 0 14.5em;}
+.dateinclude {margin: 0 0 0 13.6em;*margin: 0 0 0 14.5em;}
+.dateinclude label, .printlimit label {float: none;font-weight: normal;font-size: 0.9em;*font-size: 0.85em;margin: 0;padding: 0;*width: 18.5em;}
+.printlimit {margin: 0 0 0 14.2em;*margin: 0 0 0 14.5em;}
+.physcheckboxes, .dateFrom {margin: -1em 0 0 13.6em;*margin: -1em 0 0 14.5em;}
+.displayradio {margin: -1.5em 0 0 13.6em;*margin: -1.5em 0 0 14.5em;} 
+.dateTo {margin: 0.5em 0 0 13.6em;*margin: 0.5em 0 0 14.5em;}
+.dateTo label {margin-right: 1.4em;*margin-right: 0.2em;}
+.eventdateFrom {margin: -1em 0 0 13.6em;*margin: -1em 0 0 14.5em;}
+.eventdateTo {margin: 0.5em 0 0 13.6em;*margin: 0.5em 0 0 14.5em;}
+.physcheckboxes label, .featcol1 label, .featcol2 label, .displayradio label, .dateFrom label, .dateTo label, .entcontcheckboxes label, .namecol1 label, .namecol2 label {float: none;font-weight: normal;}
+.eventdateFrom label, .eventdateTo label {float: left;font-weight: normal;width: 3em;}
+.physcheckboxes .col {margin-left: 1.5em;}
+.specialcheckboxes, .entcontcheckboxes {float: left;display: block;margin-left: 13.6em;_margin-left: 7.5em;margin-top: -1em;}
+.col {display: block;}
+label.long {*width: 23em;}
+label.display20 {*width: 3em;}
+#srchbuttons .submit {padding: 1px 2px 1px 2px;float: right;margin-right: 4.5em;}
+#srchbuttons {margin: 0.5em 1em 0.5em 0.5em;padding: 0.5em 0.5em 1em 0.5em;}
+#srchbuttons a.clearlink {float: left;}
+.topsubmit {padding: 1px 2px 1px 2px;float: right;margin-right: 6em;margin-top: -2em;}
+.hideopts, .showopts {font-size: 0.9em;margin: 0 0 0 0.5em;float: left;}
+#nameRestrictions {float: left;display: block;margin-left: 5em;}
+.searchtip-name {font-style: italic;font-size: 0.9em;margin-left: 16.5em;}
+/*results styles*/
+.thumbImg{ float:right; padding: 5px; margin: 0;}
+#som li .resdetails div.recField {padding: 3px 0;}
+#som li .resdetails div.recField .fieldname {float: left;font-weight: bold;width: 13em;}
+#som li .resdetails div.recField .data {margin-left: 13em;}
+/*full record styles*/
+#fullRecord div.recField {clear:left; padding: 5px 0; margin:0;}
+#fullRecord div.recField .fieldname{float: left;font-weight:bold; width: 10.5em;}
+#fullRecord div.recField .data{margin-left: 11em; padding:0; vertical-align: top;*float: left;*margin-left:0;}
+.thumbImgCit{ float:right;padding:10px 0 10px 10px; margin: 0;}
+/*lightbox styles*/
+#lightboxList ol li .imagedetails {width: 12em;float: left;padding-right: 4px;margin-left: 2px;}
+#lightboxList ol li .thumbImg {float: none;padding: 0.5em 0 0 0;height: 160px;text-align: center;}
+#lightboxList ol li .titleLB, #lightboxList ol li .shelfmarkLB, #lightboxList ol li .numimageLB {padding-top: 5px;padding-bottom: 5px;}
+#screen-switcher {
+  display: none;
+}
+#pageheading p {
+  margin: -20px 0px 0px 0px;
+}
+.recField {
+  margin: 0px !important;
+}
+#footerHlp {
+  margin: 50px 0px 0px 0px;
+}
+#print-som ol li {
+clear:both;
+}
+
