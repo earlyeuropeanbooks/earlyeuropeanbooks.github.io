@@ -94,3 +94,9 @@ select.form-control {
   max-height: 500px;
   margin: 0 auto;
 }
+
+.modal-body h1, h2, h3, h4, h5, h6 {
+  color: #000000;
+  margin: 0;
+  padding: 10px 0 0 0;
+}
