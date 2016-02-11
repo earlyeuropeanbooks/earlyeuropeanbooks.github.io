@@ -16,7 +16,7 @@ def retrieve_image_paths():
   """create a dictionary whose keys are prqids and values 
   are paths to the image for that prqid"""
   image_paths = {}
-  for i in glob.glob("../images/*.jpg"):
+  for i in glob.glob("../pageImages/*.jpg"):
 
     # use full images, not thumbs
     if ".thumb.jpg" in i:
@@ -24,7 +24,7 @@ def retrieve_image_paths():
     prqid = "-".join( i.split("-")[:-1] )
 
     # set the id key equal to /images/ + image filename
-    image_paths[ os.path.basename(prqid) ] = "/images/" + os.path.basename(i)
+    image_paths[ os.path.basename(prqid) ] = os.path.basename(i)
   return image_paths
 
 
