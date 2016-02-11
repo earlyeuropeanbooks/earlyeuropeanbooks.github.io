@@ -1,77 +1,91 @@
 <!DOCTYPE html>
 <html>
   <head>
+
     <!-- Set page encoding -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+    <!-- Set page title -->
     <title>ProQuest - EEB</title>
 
     <!-- add favicon -->
     <link rel='shortcut icon' href='/img/favicon.png' type='image/x-icon'/ > 
 
-    <!-- Load leaflet JS and CSS -->
-    <script src="/js/leaflet.js"></script>
+    <!-- Load Application CSS -->
+    <link rel="stylesheet" href="/css/main_styles_eurobo.css">
+    <link rel="stylesheet" href="/css/eeb-map.css">
+    <link rel="stylesheet" href="/css/bootstrap-form-control.css">
     <link rel="stylesheet" href="/css/leaflet.min.css">
 
-    <!-- Load JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-
-    <!-- Load Bootstrap JS and CSS -->
-    <script src="/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
-    <!-- Load D3.js -->
+    <!-- Load Application JS -->
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="/js/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js"></script>
-
-    <!-- Load Handlebars -->
     <script src="/js/handlebars.min-latest.js"></script>
-
-    <!-- Load Application CSS -->
-    <link rel="stylesheet" href="/css/eeb-map.css">
 
   </head>
 
-  <body onload="initializeMap()">
+  <body onload=initializeMap()>
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" 
-                  data-target="#bs-example-navbar-collapse-1">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand page-scroll" href="#page-top">Early European Books Data Dashboard</a>
+    <div id="hiddenMessages2"></div>
+    <div id="skip"><a accesskey="2" href="#start">
+       Skip over navigation to the main content
+      </a>
+    </div>
+    <div id="wrapper">
+      <div id="header">
+        <div class="logoHdr">
+          <img src="/images/pq_logo.jpg" alt="ProQuest logo" width="109" height="47">
+          <div class="logoTitle"> 
+             <span class="mainHdr">Early European Books</span><br>
+             <span class="mainStrap">printed sources to 1700</span> 
           </div>
-
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          </div>
-          <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container-fluid -->
-    </nav>
+        <div id="mainnav">
+          <ul class="mainnavLft">
+            <li class="homelink"><a href="/marketing/index.jsp" accesskey="1">HOME</a></li>
+          </ul>
+          <ul class="mainnavRgt">
+            <li><a accesskey="6" href="/help/full_record_help.jsp" target="_blank" class="popUpHelp noBG">HELP</a></li>
+          </ul>
+        </div>        
+        <div class="mainnavBttm"></div>
+      </div>
+    </div> <!-- Navigation -->
 
-    <div class="container">
-      <div class="row">
-        <div id="barchart" class="col-sm-3">
-          <p id="menu">
-            <b>Search Records by </b>
-            <select id="selectionDropdown">
-              <option value="/json/classifications.json">Subject</option>
-              <option value="/json/languages.json">Language</option>
-            </select>
-          </p>
-        </div> <!-- /barchart -->
-        <div id="map" class="col-sm-9"></div>
-      </div> <!-- /row --> 
-    </div> <!-- /container -->
+    <!-- Main Content -->
+    <div id="maincontent">
+      <div class="clearBoth"></div>
+      <a id="start" name="start"></a>
+
+      <!-- Visualization Navigation -->
+      <div id="visualization-nav">
+        <div id="visualization-nav-data-map">Data Map</div>
+        <div id="visualization-nav-label">View books by</div>
+        <div class="dropdown" id="visualization-nav-dropdown">
+          <select class="form-control" id="selectionDropdown">
+            <option value="/json/classifications.json">Subject</option>
+            <option value="/json/languages.json">Language</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="barchart-content-wrapper">
+        <div id="barchart">
+          <div id="barchart-label">
+            <div><b>Books by Subject</b></div>
+            <div>Click on a subject to narrow the map visualization. Click on a circle on the map to view the book detials.</div>
+            <br>
+          </div>
+        </div><!-- /barchart -->
+      </div> <!-- /barchart-content-wrapper -->
+      <div id="map"></div>
+    </div> <!-- /maincontent -->
   </body>
 
-  <!-- Popup Modal Template -->
+
+<!-- Popup Modal Template -->
   <div id="myModal" class="modal fade" tabindex="-1" role="dialog" 
       aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -107,8 +121,7 @@
   <!-- Populate Modal Template -->
   <script src="/js/populateModalTemplate.js"></script>
 
-  <!-- Load EEB Map JS and CSS -->
+  <!-- Load EEB Map JS -->
   <script src="/js/eebMap.js"></script>
 
 </html>
-

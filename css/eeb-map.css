@@ -3,27 +3,88 @@ body {
   padding:0; 
 }
 
+/****** Visualization Nav ******/
+
+select.form-control {
+  border: 1px solid rgb(166, 166, 166);
+  background-color:#F8f8f8;
+  font-family: 'Arial Regular', 'Arial';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 13px;
+  text-decoration: none;
+  color: #000000;
+  width: 171px;
+  max-height: 30px;
+}
+
+#visualization-nav {
+  height: 46px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: #F2F2F2;
+}
+
+#visualization-nav-data-map {
+  position: absolute;
+  margin: 10px 80px 0px 20px;
+  font-size: 22px;
+}
+
+#visualization-nav-label {
+  position: absolute;
+  margin: 16px 5px 0px 195px;
+  font-family: 'Arial Regular', 'Arial';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  color: #333333;
+  text-align: left;
+  line-height: normal;
+}
+
+#visualization-nav-dropdown {
+  position: absolute;
+  width: 100px;
+  margin: 7px 0px 0px 290px;
+}
+
+
+/****** visualizations ******/
+
 #map { 
   position: absolute; 
-  top:50px; 
-  bottom:0; 
-  right:0; 
-  left:25%;
+  top: 146px; 
+  bottom: 0; 
+  right: 0; 
+  left: 32.5%;
+  height: 100%;
 }
- 
-/* reset bootstrap container margins */
-.container {
+
+#map a {
   margin: 0;
+  color: #000000;
 }
 
 #barchart {
-  top: 50px;
+  position: absolute;
+  top: 146px;
+  max-width: 32.5%;
+  margin: 0;
 }
 
-#menu {
-  padding: 15px 0 0 0;
-  white-space: nowrap;
+#barchart-label {
+  margin: 12px 20px 0px 4px;
+  font-size: 14px;
 }
+
+#barchart-content-wrapper {
+  margin: 0px 10px 0px 16px;
+}
+
+
+/****** Modals ******/
 
 .modal-content .entry {
   line-height: 13px;

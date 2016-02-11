@@ -1,8 +1,8 @@
 // globals
 var barHeight = 20;
 
-var margin = {top: 20, right: 20, bottom: 0, left: 210},
-  width = $(window).width() * 0.25 - margin.left - margin.right,
+var margin = {top: 20, right: 20, bottom: 0, left: 245},
+  width = $(window).width() * 0.325 - margin.left - margin.right,
   height = $(window).height() - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
@@ -17,7 +17,7 @@ var xAxis = d3.svg.axis()
   .orient("top")
   .tickSize(-height - margin.bottom);
 
-var menu = d3.select("#menu select")
+var menu = d3.select("#selectionDropdown")
   .on("change", function() {
     updateBarchart();
     
@@ -121,6 +121,8 @@ var updateBarchart = function() {
   // and retrieve that json
   var dropdownVal = $("#selectionDropdown").val();
     
+  console.log(dropdownVal);
+
   // the selected value is a path to the desired json
   // so retrieve that json
   d3.json(dropdownVal, function(error, json) {
@@ -170,7 +172,8 @@ var updateBarchart = function() {
         .attr("x", 5)
         .attr("y", function(d, i) {return i * barHeight + 15;})
         .text(function(d) {return d.selectionString;})
-        .style("font-size", "10px")
+        .style("font", "12px Arial")
+        .style("margin-left", "16px")
         .on("click", function(d) { barchartClick(d); })
         .on("mouseover", function(d) { barchartMouseover(d); })
         .on("mouseout", function(d) { barchartMouseout(d, colors); })
