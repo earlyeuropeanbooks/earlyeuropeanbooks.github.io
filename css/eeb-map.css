@@ -58,7 +58,7 @@ select.form-control {
   top: 146px; 
   bottom: 0; 
   right: 0; 
-  left: 32.5%;
+  left: 466px;
   height: 100%;
 }
 
@@ -70,7 +70,7 @@ select.form-control {
 #barchart {
   position: absolute;
   top: 146px;
-  max-width: 32.5%;
+  width: 466px;
   margin: 0;
 }
 
