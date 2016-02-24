@@ -50,7 +50,17 @@ select.form-control {
   margin: 7px 0px 0px 290px;
 }
 
-
+#clear-map {
+  display: block;
+  border: 1px solid rgb(166, 166, 166);
+  background-color:#f8f8f8;
+  font-family: Arial;
+  height: 30px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-left: 550px;
+  margin-top: 7px;
+}
 /****** visualizations ******/
 
 #map { 
@@ -82,7 +92,6 @@ select.form-control {
 #barchart-content-wrapper {
   margin: 0px 10px 0px 16px;
 }
-
 
 /****** Modals ******/
 
