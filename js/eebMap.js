@@ -11,7 +11,7 @@ var initializeMap = function() {
 
   // add map layer for black and white background
   map.addLayer(new L.tileLayer("http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}", {
-    maxZoom: 7,
+    maxZoom: 14,
     attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">' +
         'GIScience Research Group @ University of Heidelberg</a> &mdash; ' +
         'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
