@@ -24,7 +24,8 @@ var menu = d3.select("#selectionDropdown")
     // reset the opacity of all circles on the map to their 
     // original values and restore pointer events to make all 
     // circles clickable 
-    d3.selectAll(".mapPoint")
+    d3.selectAll(".mapPoint").transition()
+      .duration(1250)
       .style("stroke-opacity", ".5")
       .style("fill-opacity", "0.2")
       .style("pointer-events", "auto");    
@@ -52,20 +53,18 @@ var barchartClick = function(d) {
 
   // use barId + d.selectionId key to increase opacity
   // of all but selected bars
-  d3.select("#barchart").selectAll("rect")
+  d3.select("#barchart").selectAll("rect").transition()
     .style("opacity", ".4");
-  d3.select("#barId" + d.selectionId)
+  d3.select("#barId" + d.selectionId).transition()
     .style("opacity", "1");
 
   // remove opacity from all records
   // and remove their pointer events to make them unclickable
-  d3.selectAll(".mapPoint")
+  d3.selectAll(".mapPoint").transition()
+    .duration(1250)
     .style("stroke-opacity", "0.0")
     .style("fill-opacity", "0.0")
     .style("pointer-events", "none"); 
-
-  // remove any points that have been added by previous bar clicks
-  d3.selectAll(".currentSelectionPoint").remove();
 
   // determine the kind of selection currently being plotted
   // e.g. classification
@@ -84,6 +83,13 @@ var barchartClick = function(d) {
   d3.json(selectionJsonPath, function(error, json) {
     if (error) return console.warn(error);
     addMapPoints(json);
+
+    // after adding those points with stroke and fill opacity=0,
+    // add opacity for transition effect
+    d3.selectAll("." + selectionType + "Id" + selectionId).transition()
+      .duration(750)
+      .style("fill-opacity", "0.2" )
+      .style("stroke-opacity", "0.5");
   }); 
 };
 
@@ -120,8 +126,6 @@ var updateBarchart = function() {
   // check to see which value is selected in the dropdown
   // and retrieve that json
   var dropdownVal = $("#selectionDropdown").val();
-    
-  console.log(dropdownVal);
 
   // the selected value is a path to the desired json
   // so retrieve that json
