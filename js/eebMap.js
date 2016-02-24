@@ -103,3 +103,14 @@ var addMapPoints = function(json) {
     }).addTo(globalMap).on('click', mapPointClick);;
   }; 
 }; 
+
+$("#clear-map").click(function() {
+  d3.selectAll(".mapPoint").transition()
+    .duration(1250)
+    .style("stroke-opacity", "0.5")
+    .style("fill-opacity", "0.2");
+
+  d3.selectAll("rect").transition()
+    .duration(1250)
+    .style("opacity", "1");
+});
