@@ -2,8 +2,10 @@
 var barHeight = 20;
 
 var margin = {top: 20, right: 20, bottom: 0, left: 245},
-  width = 466 - margin.left - margin.right,
-  height = $(window).height() - margin.top - margin.bottom;
+  // fixed width - margins - 10 for padding in container
+  width = 466 - margin.left - margin.right - 10,
+  // subtract a fixed amount (30) to remove unused whitespace
+  height = $(window).height() - margin.top - margin.bottom - 30;
 
 var x = d3.scale.linear()
   .range([15, width]);
@@ -33,7 +35,7 @@ var menu = d3.select("#selectionDropdown")
 
 
 var initializeBarchart = function() {
-  var svg = d3.select("#barchart").append("svg")
+  var svg = d3.select("#barchart-svg").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
 
