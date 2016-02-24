@@ -64,13 +64,25 @@ var initializeMap = function() {
       var languageId = bookLocationJson[i].languageId;
 
       // add book id and classification id to the circle's class values
-      L.circleMarker([locationLat, locationLng], {color: "#c00000", radius: 4, 
-          className: "mapPoint" +
-            " bookId" + String(bookId) + 
-            " classificationId" + String(classificationId) +
-            " languageId" + String(languageId) 
+      L.circleMarker([locationLat, locationLng], {
+        color: "#c00000", 
+        radius: 4,
+        opacity: 0,
+        fillOpacity: 0, 
+        className: "mapPoint" +
+          " bookId" + String(bookId) + 
+          " classificationId" + String(classificationId) +
+          " languageId" + String(languageId) 
       }).addTo(map).on('click', mapPointClick);;
     };
+
+    // having initialized the map points with 0 opacity, transition
+    // them into the map
+    var ppp = d3.selectAll(".mapPoint")
+    ppp.transition()
+      .duration(1250)
+      .style("stroke-opacity", "0.5")
+      .style("fill-opacity", "0.2");
   });
 
   // pass map into global "globalMap" object
@@ -94,14 +106,19 @@ var addMapPoints = function(json) {
     // add a special class to encode the fact that the current circle is 
     // a member of the currently selected dropdown val {classification, location}
     // and has the selection id that corresponds to the bar the user has clicked
-    L.circleMarker([locationLat, locationLng], {color: "#c00000", radius: 4, 
-        className: "mapPoint" +
-          " bookId" + String(bookId) + 
-          " classificationId" + String(classificationId) +
-          " languageId" + String(languageId) +
-          " " + "currentSelectionPoint"
+    L.circleMarker([locationLat, locationLng], {
+      color: "#c00000", 
+      radius: 4,
+      opacity: 0,
+      fillOpacity: 0, 
+      className: "mapPoint" +
+        " bookId" + String(bookId) + 
+        " classificationId" + String(classificationId) +
+        " languageId" + String(languageId) +
+        " " + "currentSelectionPoint"
     }).addTo(globalMap).on('click', mapPointClick);;
   }; 
+
 }; 
 
 $("#clear-map").click(function() {
