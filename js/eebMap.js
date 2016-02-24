@@ -5,7 +5,7 @@ var initializeMap = function() {
 
  // add basemap to the #map id div
   var map = new L.Map("map", {
-      center: new L.LatLng(46.85, 4.35),
+      center: new L.LatLng(46.85, 6.35),
       zoom: 5
   });
 
