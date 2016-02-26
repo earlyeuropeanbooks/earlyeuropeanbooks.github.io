@@ -94,6 +94,7 @@ select.form-control {
   position: fixed;
   background: #ffffff;
   opacity:.97;
+  max-width: 450px;
 }
 
 #barchart-svg {
