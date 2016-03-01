@@ -17,14 +17,15 @@
     <link rel="stylesheet" href="/css/bootstrap-form-control.css">
     <link rel="stylesheet" href="/css/bootstrap-modal.css">
     <link rel="stylesheet" href="/css/leaflet.min.css">
+    <link rel="stylesheet" href="/css/ion.rangeSlider.css">
+    <link rel="stylesheet" href="/css/ion.rangeSlider.skinHTML5.css">
 
     <!-- Load Application JS -->
     <script src="/js/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <script src="/js/leaflet.js"></script>
     <script src="/js/d3.v3.min.js"></script>
     <script src="/js/handlebars.min-latest.js"></script>
-    
   </head>
 
   <body onload=initializeMap()>
@@ -72,9 +73,14 @@
           </select>
         </div>
 
+        <!-- Reset map to initial state -->
         <button type="button" class="btn btn-primary" id="clear-map">Reset Map</button>
 
-      </div>
+        <!-- Create range slider -->
+        <div id="year-range-slider-container">        
+          <input type="text" id="year-range-slider" name="example_name" value="" /> 
+        </div>
+      </div> <!-- ./Visualization Navigation -->
 
       <div id="barchart">
         <div id="barchart-label">
@@ -127,4 +133,8 @@
   <!-- Load EEB Map JS -->
   <script src="/js/eebMap.js"></script>
 
+  <!-- Load year range slider for selection of records on publication year -->
+  <script src="/js/ion.rangeSlider.js"></script>
+  <script src="/js/year-range-slider.js"></script>
+ 
 </html>
