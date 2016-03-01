@@ -21,8 +21,14 @@ var xAxis = d3.svg.axis()
 
 var menu = d3.select("#selectionDropdown")
   .on("change", function() {
+    // remove all points with .currentSelectionPoint
+    // and add all initial points to plot
     updateBarchart();
     
+    // reset the year range slider to its
+    // initial value range
+    yearRangeSlider.reset();
+
     // reset the opacity of all circles on the map to their 
     // original values and restore pointer events to make all 
     // circles clickable 
@@ -93,6 +99,9 @@ var barchartClick = function(d) {
       .style("fill-opacity", "0.2" )
       .style("stroke-opacity", "0.5");
   }); 
+
+  // reset the range slider to its initial range
+  yearRangeSlider.reset();
 };
 
 
@@ -116,7 +125,6 @@ var dataKey = function(d) {
 
 
 var updateBarchart = function() {
-
   // when the user clicks on the dropdown
   // to change the barchart, remove any points
   // that were added by virtue of the user clicking
