@@ -2,14 +2,16 @@ from __future__ import division
 from collections import defaultdict
 import urllib2, codecs, sys, re, os, urlparse, string, json, random
 
-# this script takes as input a matrix such as ../data/EEB-1-7.txt
-# and generates output in the json/ directory
-# usage: python geocode.py "../data/eeb-1-7-utf16.txt" 
+"""
+this script takes as input a matrix such as ../data/EEB-1-7.txt
+and generates output in the json/ directory
+usage: python geocode.py "../data/eeb-1-7-utf16.txt" 
 
-# TODO: update 'perturbance' value as a function of the number of observations
-# we have for the given location, in order to make sure that cities with
-# one observation, e.g., position that observation directly on the geocoordinates
-# of the city 
+TODO: update 'perturbance' value as a function of the number of observations
+we have for the given location, in order to make sure that cities with
+one observation, e.g., position that observation directly on the geocoordinates
+of the city 
+"""
 
 ################
 # url to ascii #
@@ -68,10 +70,10 @@ def iriToUri(iri):
 if not os.path.exists("../json/locations"):
   os.makedirs("../json/locations")
 
-if not os.path.exists("../json/language_selections"):
+if not os.path.exists("../json/user_selections/language_selections"):
   os.makedirs("../json/user_selections/language_selections")
 
-if not os.path.exists("../json/classification_selections"):
+if not os.path.exists("../json/user_selections/classification_selections"):
   os.makedirs("../json/user_selections/classification_selections")
 
 def retrieve_locations():
@@ -159,7 +161,8 @@ def map_language_string_to_id():
 
 
 def write_map_location_json():
-  """Write json to disk for each location to be plotted"""
+  """Write json to disk for each location to be plotted. This is the
+     json that will be sent to the client upon initial page load"""
   with open("../json/location_id_to_string.json") as f:
     location_id_to_string = json.load(f)
     string_to_location_id = {v:k for k, v in location_id_to_string.items()}
@@ -199,17 +202,32 @@ def write_map_location_json():
         id = sr[0]
         prq_id = sr[1]
         clean_location = sr[5]
+        clean_year = sr[6]
         language_string = sr[7] 
         classification_string = sr[8] 
 
         # if the book id isn't numeric, this row is misinterpreted, so don't
         # persist the record
         try:
-          float(id)
+          id = int(id)
         except:
           print "couldn't persist id:", "".join(l for l in 
           " ".join(id.split()) if ord(l) < 128)
           continue
+
+        # also convert the record's year field to an integer to save packet size.
+        # because there are many records with year fields published as ranges,
+        # e.g. 1473-1500, capture the latter year to be conservative
+        if "-" in clean_year:
+          clean_year = clean_year.split("-")[0]
+        # if there are X's in the year e.g. 157X, replace the X with a zero
+        clean_year = clean_year.replace("X","0")
+        # then convert the entire clean_year object to an integer
+        try:
+          clean_year = int(clean_year)
+        except:
+          print "record", id, "has a non-integer year field", "".join(
+              i for i in clean_year if ord(i) < 128)
 
         # we don't persist empty classification 
         # or language strings so try/except
@@ -254,14 +272,11 @@ def write_map_location_json():
             lat = int(lat*1000)/1000
             lng = int(lng*1000)/1000
 
-            # to further reduce json size, coerce ids into integers
-            id = int(id)
-
             # create the book level information we'll use to plot the 
             # book on the map
             book_location_dict = {"id":id, "lat":lat, 
                 "lng":lng, "classificationId": classification_id, 
-                "languageId": language_id}
+                "languageId": language_id, "year": clean_year}
 
             # check to make sure we haven't reached the maximum
             # number of observations for the current selection in the current
