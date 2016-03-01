@@ -61,6 +61,55 @@ select.form-control {
   margin-left: 550px;
   margin-top: 7px;
 }
+
+/****** year range slider ******/
+#year-range-slider-container {
+  display: block;
+  position: absolute;
+  width: 200px;
+  margin: -42px 0px 0px 725px;
+}
+
+/* overwrite the size of the ion.RangeSlider HTML5 
+   style slider buttons */
+#year-range-slider-container span.irs-slider {
+  top: 30px;
+  width: 15px;
+  height: 15px;
+}
+
+#year-range-slider-container span.irs-from {
+  font-size: 11px;
+  padding: 1px 3px;
+  background: rgb(244, 67, 67);
+  margin-top: 10px;
+}
+
+#year-range-slider-container span.irs-to {
+  font-size: 11px;
+  padding: 1px 3px;
+  background: rgb(244, 67, 67);
+  margin-top: 10px;
+}
+
+#year-range-slider-container span.irs-bar {
+  border-top: 1px solid rgb(244, 67, 67);
+  border-bottom: 1px solid rgb(244, 67, 67);
+  background: rgb(244, 67, 67);
+  background: linear-gradient(to top, rgba(141, 17, 16, 1) 0%, 
+    rgba(244, 67, 67, 1) 100%);
+}
+
+/* don't display the placeholders for the min and max
+   values of the range slider */
+#year-range-slider-container span.irs-min {
+  display: none;
+}
+
+#year-range-slider-container span.irs-max {
+  display: none;
+}
+
 /****** visualizations ******/
 
 #map { 
