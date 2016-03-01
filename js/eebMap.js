@@ -62,6 +62,7 @@ var initializeMap = function() {
       var bookId = bookLocationJson[i].id;
       var classificationId = bookLocationJson[i].classificationId;
       var languageId = bookLocationJson[i].languageId;
+      var pubYear = bookLocationJson[i].year;
 
       // add book id and classification id to the circle's class values
       L.circleMarker([locationLat, locationLng], {
@@ -72,14 +73,15 @@ var initializeMap = function() {
         className: "mapPoint" +
           " bookId" + String(bookId) + 
           " classificationId" + String(classificationId) +
-          " languageId" + String(languageId) 
+          " languageId" + String(languageId) +
+          " pubYear" + String(pubYear)
       }).addTo(map).on('click', mapPointClick);;
     };
 
     // having initialized the map points with 0 opacity, transition
     // them into the map
-    var ppp = d3.selectAll(".mapPoint")
-    ppp.transition()
+    var allMapPoints = d3.selectAll(".mapPoint")
+    allMapPoints.transition()
       .duration(1250)
       .style("stroke-opacity", "0.5")
       .style("fill-opacity", "0.2");
@@ -102,6 +104,7 @@ var addMapPoints = function(json) {
     var bookId = json[i].id;
     var classificationId = json[i].classificationId;
     var languageId = json[i].languageId;
+    var pubYear = json[i].year;
 
     // add a special class to encode the fact that the current circle is 
     // a member of the currently selected dropdown val {classification, location}
@@ -115,19 +118,26 @@ var addMapPoints = function(json) {
         " bookId" + String(bookId) + 
         " classificationId" + String(classificationId) +
         " languageId" + String(languageId) +
-        " " + "currentSelectionPoint"
+        " pubYear" + String(pubYear) + 
+        " " + "currentSelectionPoint" 
     }).addTo(globalMap).on('click', mapPointClick);;
   }; 
 
 }; 
 
+// function to reset map to initial page load conditions
 $("#clear-map").click(function() {
+  // restore opacity to all points
   d3.selectAll(".mapPoint").transition()
     .duration(1250)
     .style("stroke-opacity", "0.5")
     .style("fill-opacity", "0.2");
 
+  // restore opacity to all rects
   d3.selectAll("rect").transition()
     .duration(1250)
     .style("opacity", "1");
+
+  // reset year slider
+  yearRangeSlider.reset();
 });
