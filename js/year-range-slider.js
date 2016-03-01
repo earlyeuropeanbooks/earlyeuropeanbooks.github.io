@@ -25,18 +25,35 @@ $("#year-range-slider").ionRangeSlider({
         .style("fill-opacity", "0.0")
         .style("pointer-events", "none"); 
       
-      // restore opacity to the points whose publication
-      // date falls within the range specified by the slider
-      for (i=0; i < endYear-startYear; i++) {
-        var currentYear = startYear + i;
-        var selectionVal = ".pubYear" + String(currentYear);
-        d3.selectAll(selectionVal).transition()
-          .duration(1250)
-          .style("fill-opacity", "0.2" )
-          .style("stroke-opacity", "0.5");
+      // if the user has clicked a bar to see the subset
+      // of records that the clicked bar represent (e.g. 
+      // "Bibles"), then there will be more than one items 
+      // with the ".currentSelectionPoint" class, so only
+      // grant opacity to those records
+      if (d3.selectAll(".currentSelectionPoint")[0].length > 1) {
+        console.log("passed if");
+        for (i=0; i < endYear-startYear; i++) {
+          var currentYear = startYear + i;
+          var selectionVal = ".pubYear" + String(currentYear);
+          d3.selectAll(".currentSelectionPoint").filter(selectionVal).transition()
+            .duration(1250)
+            .style("fill-opacity", "0.2" )
+            .style("stroke-opacity", "0.5");
+        }; // if for loop
 
-      }; // for loop
+      } else {
 
+        // restore opacity to the points whose publication
+        // date falls within the range specified by the slider
+        for (i=0; i < endYear-startYear; i++) {
+          var currentYear = startYear + i;
+          var selectionVal = ".pubYear" + String(currentYear);
+          d3.selectAll(selectionVal).transition()
+            .duration(1250)
+            .style("fill-opacity", "0.2" )
+            .style("stroke-opacity", "0.5");
+        }; // else for loop
+      } // if-else conditional
     } // onFinish()
 });
 
