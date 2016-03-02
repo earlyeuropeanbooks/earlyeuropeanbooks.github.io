@@ -61,19 +61,25 @@ var barchartClick = function(d) {
 
   // use barId + d.selectionId key to increase opacity
   // of all but selected bars
-  d3.select("#barchart").selectAll("rect").transition()
+  d3.select("#barchart").selectAll("rect")
     .style("opacity", ".4");
-  d3.select("#barId" + d.selectionId).transition()
+  d3.select("#barId" + d.selectionId)
     .style("opacity", "1");
 
   // remove opacity from all records
   // and remove their pointer events to make them unclickable
-  d3.selectAll(".mapPoint").transition()
+  var allPoints = d3.selectAll(".mapPoint");
+  
+  // remove the currentSelectionPoint class from all points
+  allPoints.classed("currentSelectionPoint", false); 
+
+  // make all points invisible
+  allPoints.transition()
     .duration(1250)
     .style("stroke-opacity", "0.0")
     .style("fill-opacity", "0.0")
-    .style("pointer-events", "none"); 
-
+    .style("pointer-events", "none");
+    
   // determine the kind of selection currently being plotted
   // e.g. classification
   var selectionType = d.selectionGroup;
@@ -94,10 +100,17 @@ var barchartClick = function(d) {
 
     // after adding those points with stroke and fill opacity=0,
     // add opacity for transition effect
-    d3.selectAll("." + selectionType + "Id" + selectionId).transition()
-      .duration(750)
+    var currentSelection = d3.selectAll("." + selectionType + "Id" + selectionId);
+
+    // add a class to indicate that the point is selected
+    currentSelection.classed("currentSelectionPoint", true)
+
+    // update the opacity on these points
+    currentSelection.transition()
+      .duration(1250)
       .style("fill-opacity", "0.2" )
       .style("stroke-opacity", "0.5");
+
   }); 
 
   // reset the range slider to its initial range
