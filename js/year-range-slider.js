@@ -31,7 +31,6 @@ $("#year-range-slider").ionRangeSlider({
       // with the ".currentSelectionPoint" class, so only
       // grant opacity to those records
       if (d3.selectAll(".currentSelectionPoint")[0].length > 0) {
-        console.log("passed if");
         for (i=0; i < endYear-startYear; i++) {
           var currentYear = startYear + i;
           var selectionVal = ".pubYear" + String(currentYear);
