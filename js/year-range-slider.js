@@ -25,35 +25,38 @@ $("#year-range-slider").ionRangeSlider({
         .style("fill-opacity", "0.0")
         .style("pointer-events", "none"); 
       
+      // generate a single class selector that contains
+      // all elements with the given class property
+      var allYearClassSelector = '';
+      for (i=0; i<endYear-startYear+1; i++) {
+        var currentYear = startYear + i;
+        allYearClassSelector += " .pubYear" + String(currentYear) + ",";
+      };
+      // append one final class that's a filler to avoid ending
+      // on a comma (which breaks the selector)
+      allYearClassSelector += " .fillerObject";
+
       // if the user has clicked a bar to see the subset
       // of records that the clicked bar represent (e.g. 
       // "Bibles"), then there will be more than one items 
       // with the ".currentSelectionPoint" class, so only
       // grant opacity to those records
       if (d3.selectAll(".currentSelectionPoint")[0].length > 0) {
-        for (i=0; i < endYear-startYear; i++) {
-          var currentYear = startYear + i;
-          var selectionVal = ".pubYear" + String(currentYear);
-          d3.selectAll(".currentSelectionPoint").filter(selectionVal).transition()
-            .duration(1250)
-            .style("fill-opacity", "0.2" )
-            .style("stroke-opacity", "0.5")
-            .style("pointer-events", "auto");  
-        }; // if for loop
+        d3.selectAll(".currentSelectionPoint").filter(allYearClassSelector).transition()
+          .duration(1250)
+          .style("fill-opacity", "0.2" )
+          .style("stroke-opacity", "0.5")
+          .style("pointer-events", "auto");  
 
       } else {
 
         // restore opacity to the points whose publication
         // date falls within the range specified by the slider
-        for (i=0; i < endYear-startYear; i++) {
-          var currentYear = startYear + i;
-          var selectionVal = ".pubYear" + String(currentYear);
-          d3.selectAll(selectionVal).transition()
-            .duration(1250)
-            .style("fill-opacity", "0.2" )
-            .style("stroke-opacity", "0.5")
-            .style("pointer-events", "auto");  
-        }; // else for loop
+        d3.selectAll(allYearClassSelector).transition()
+          .duration(1250)
+          .style("fill-opacity", "0.2" )
+          .style("stroke-opacity", "0.5")
+          .style("pointer-events", "auto"); 
       } // if-else conditional
     } // onFinish()
 });
