@@ -37,7 +37,8 @@ $("#year-range-slider").ionRangeSlider({
           d3.selectAll(".currentSelectionPoint").filter(selectionVal).transition()
             .duration(1250)
             .style("fill-opacity", "0.2" )
-            .style("stroke-opacity", "0.5");
+            .style("stroke-opacity", "0.5")
+            .style("pointer-events", "auto");  
         }; // if for loop
 
       } else {
@@ -50,7 +51,8 @@ $("#year-range-slider").ionRangeSlider({
           d3.selectAll(selectionVal).transition()
             .duration(1250)
             .style("fill-opacity", "0.2" )
-            .style("stroke-opacity", "0.5");
+            .style("stroke-opacity", "0.5")
+            .style("pointer-events", "auto");  
         }; // else for loop
       } // if-else conditional
     } // onFinish()
