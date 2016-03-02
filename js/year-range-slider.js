@@ -30,7 +30,7 @@ $("#year-range-slider").ionRangeSlider({
       // "Bibles"), then there will be more than one items 
       // with the ".currentSelectionPoint" class, so only
       // grant opacity to those records
-      if (d3.selectAll(".currentSelectionPoint")[0].length > 1) {
+      if (d3.selectAll(".currentSelectionPoint")[0].length > 0) {
         console.log("passed if");
         for (i=0; i < endYear-startYear; i++) {
           var currentYear = startYear + i;
