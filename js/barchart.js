@@ -5,7 +5,7 @@ var margin = {top: 20, right: 20, bottom: 0, left: 245},
   // fixed width - margins - 10 for padding in container
   width = 466 - margin.left - margin.right - 10,
   // subtract a fixed amount (30) to remove unused whitespace
-  height = $(window).height() - margin.top - margin.bottom - 30;
+  height = 1000 - margin.top - margin.bottom - 30;
 
 var x = d3.scale.linear()
   .range([15, width]);
