@@ -134,12 +134,11 @@ select.form-control {
 }
 
 #barchart {
-  position: absolute;
+  position: fixed;
   top: 146px;
+  height: 100%;
   width: 466px;
   margin: 0 !important;
-  max-height:81%;
-  overflow-y: scroll;
   padding-left: 10px;
 }
 
@@ -155,7 +154,10 @@ select.form-control {
 
 #barchart-svg {
   margin-top: 77px;
+  overflow: scroll;
+  height: 100%;
 }
+
 /****** Modals ******/
 
 .modal-content .entry {
