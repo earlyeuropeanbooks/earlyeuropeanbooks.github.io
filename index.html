@@ -64,8 +64,8 @@
       <!-- Visualization Navigation -->
       <div id="visualization-nav">
         <div id="visualization-nav-data-map">Data Map</div>
-        <div id="visualization-nav-label">View books by</div>
         
+        <div id="visualization-nav-label">View books by</div>
         <div class="dropdown" id="visualization-nav-dropdown">
           <select class="form-control" id="selectionDropdown">
             <option value="/json/classifications.json">Subject</option>
@@ -73,13 +73,15 @@
           </select>
         </div>
 
-        <!-- Reset map to initial state -->
-        <button type="button" class="btn btn-primary" id="clear-map">Reset Map</button>
-
         <!-- Create range slider -->
+        <div id="year-range-slider-label">Filter books by publication year</div>
         <div id="year-range-slider-container">        
           <input type="text" id="year-range-slider" name="example_name" value="" /> 
         </div>
+
+        <!-- Reset map to initial state -->
+        <button type="button" class="btn btn-primary" id="clear-map">Reset Map</button>
+
       </div> <!-- ./Visualization Navigation -->
 
       <div id="barchart">
