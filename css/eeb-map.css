@@ -58,16 +58,28 @@ select.form-control {
   height: 30px;
   padding: 6px 12px;
   border-radius: 4px;
-  margin-left: 550px;
+  margin-left: 1050px;
   margin-top: 7px;
 }
 
 /****** year range slider ******/
+#year-range-slider-label {
+  position: absolute;
+  margin: 16px 5px 0px 545px;
+  font-family: 'Arial Regular', 'Arial';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  color: #333333;
+  text-align: left;
+  line-height: normal;
+}
+
 #year-range-slider-container {
   display: block;
   position: absolute;
   width: 200px;
-  margin: -42px 0px 0px 725px;
+  margin: -5px 0px 0px 750px;
 }
 
 /* overwrite the size of the ion.RangeSlider HTML5 
