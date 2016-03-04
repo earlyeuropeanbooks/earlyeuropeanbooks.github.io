@@ -5,7 +5,7 @@ var initializeMap = function() {
 
  // add basemap to the #map id div
   var map = new L.Map("map", {
-      center: new L.LatLng(46.85, 6.35),
+      center: new L.LatLng(46.85, 7.35),
       zoom: 5
   });
 
@@ -15,7 +15,7 @@ var initializeMap = function() {
 
   // add map layer for black and white background
   map.addLayer(new L.tileLayer("http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}", {
-    maxZoom: 14,
+    maxZoom: 8,
     attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">' +
         'GIScience Research Group @ University of Heidelberg</a> &mdash; ' +
         'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -64,14 +64,14 @@ var initializeMap = function() {
   ****************/
 
   // specify the path to the tms image tiles to be overlaid on the map
-  var myTileUrl = "images/tmsTiles/{z}/{x}/{y}.png";
-
+  var imageTileUrl = "https://s3.amazonaws.com/eeb-map/carl-radefeld-1843/{z}/{x}/{y}.png"
+  
   // add the image tiles to the map
-  L.tileLayer(myTileUrl, {
+  L.tileLayer(imageTileUrl, {
     minZoom: 5,
-    maxZoom: 7,
+    maxZoom: 8,
     attribution: "Open Source",
-    opacity: .7,
+    opacity: .6,
     tms: true
   }).addTo(map);
 
