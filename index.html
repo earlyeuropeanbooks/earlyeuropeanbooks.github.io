@@ -9,7 +9,7 @@
     <title>ProQuest - EEB</title>
 
     <!-- add favicon -->
-    <link rel='shortcut icon' href='/images/favicon.png' type='image/x-icon'/ > 
+    <link rel='shortcut icon' href='/images/favicon.png' type='image/x-icon'> 
 
     <!-- Load Application CSS -->
     <link rel="stylesheet" href="/css/main_styles_eurobo.css">
@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="/css/leaflet.min.css">
     <link rel="stylesheet" href="/css/ion.rangeSlider.css">
     <link rel="stylesheet" href="/css/ion.rangeSlider.skinHTML5.css">
+    <link rel="stylesheet" href="/css/Control.Opacity.css">
+    <link rel="stylesheet" href="/css/jquery-ui-1.10.3.custom.min.css">
 
     <!-- Load Application JS -->
     <script src="/js/jquery.min.js"></script>
@@ -76,7 +78,7 @@
         <!-- Create range slider -->
         <div id="year-range-slider-label">Filter books by publication year</div>
         <div id="year-range-slider-container">        
-          <input type="text" id="year-range-slider" name="example_name" value="" /> 
+          <input type="text" id="year-range-slider" name="year-slider-input" value="" /> 
         </div>
 
         <!-- Reset map to initial state -->
@@ -137,6 +139,10 @@
 
   <!-- Load year range slider for selection of records on publication year -->
   <script src="/js/ion.rangeSlider.js"></script>
-  <script src="/js/year-range-slider.js"></script>
+  <script src="/js/yearRangeSlider.js"></script>
  
+  <!-- Load opacity slider for map overlay -->
+  <script src="/js/Control.Opacity.js"></script>
+  <script src="/js/jquery-ui-1.10.3.custom.min.js"></script>
+
 </html>
