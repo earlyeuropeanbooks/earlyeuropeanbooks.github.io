@@ -179,4 +179,8 @@ $("#clear-map").click(function() {
 
   // reset year slider
   yearRangeSlider.reset();
+
+  // remove the currentSelectionPoint class from all points
+  d3.selectAll(".currentSelectionPoint")
+    .classed("currentSelectionPoint", false)
 });
