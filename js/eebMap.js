@@ -3,9 +3,17 @@ var globalMap = '';
 
 var initializeMap = function() {
 
- // add basemap to the #map id div
+  // add basemap to the map; if the user is on 
+  // a large screen, move the center of the image
+  var centerCoordinates = '';
+  if ($(window).width() > 1800) {
+    centerCoordinates = new L.LatLng(50.85, 21.35);
+  } else {
+    centerCoordinates = new L.LatLng(45.85, 7.85);
+  }
+
   var map = new L.Map("map", {
-      center: new L.LatLng(46.85, 7.35),
+      center: new centerCoordinates,
       zoom: 5,
       maxZoom: 10,
       minZoom: 3
