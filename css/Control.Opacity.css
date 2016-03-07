@@ -1,0 +1,9 @@
+.opacity_slider_control .ui-slider-range {
+  background-image: none;
+  background-color: #646464;
+  height: 200px;
+}  
+
+.opacity_slider_control.ui-slider.ui-slider-vertical.ui-widget.ui-widget-content.ui-corner-all.leaflet-control {
+  margin-top: 18px;
+}
