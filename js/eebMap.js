@@ -13,7 +13,7 @@ var initializeMap = function() {
   }
 
   var map = new L.Map("map", {
-      center: new centerCoordinates,
+      center: centerCoordinates,
       zoom: 5,
       maxZoom: 10,
       minZoom: 3
