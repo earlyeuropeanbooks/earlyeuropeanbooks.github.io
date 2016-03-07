@@ -63,9 +63,7 @@ var initializeMap = function() {
   ****************/
 
   // specify the path to the tms image tiles to be overlaid on the map
-  var imageTileUrl = "https://s3.amazonaws.com/eeb-map/carl-radefeld-1843/{z}/{x}/{y}.png";
-
-  var imageTileUrl = "/images/carlRadefeld1843Tiles/{z}/{x}/{y}.png";
+  var imageTileUrl = "https://s3.amazonaws.com/eeb-map/carl-radefeld-1843-tiles/{z}/{x}/{y}.png";
 
   // add the image tiles to the map
   var imageTileLayer = L.tileLayer(imageTileUrl, {
