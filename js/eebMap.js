@@ -169,7 +169,8 @@ $("#clear-map").click(function() {
   d3.selectAll(".mapPoint").transition()
     .duration(1250)
     .style("stroke-opacity", "0.5")
-    .style("fill-opacity", "0.2");
+    .style("fill-opacity", "0.2")
+    .style("pointer-events", "auto");
 
   // restore opacity to all rects
   d3.selectAll("rect").transition()
