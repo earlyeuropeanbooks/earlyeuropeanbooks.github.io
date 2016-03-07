@@ -66,11 +66,17 @@ var initializeMap = function() {
   var imageTileUrl = "https://s3.amazonaws.com/eeb-map/carl-radefeld-1843/{z}/{x}/{y}.png";
 
   var imageTileUrl = "/images/carlRadefeld1843Tiles/{z}/{x}/{y}.png";
-  
+
   // add the image tiles to the map
   var imageTileLayer = L.tileLayer(imageTileUrl, {
     attribution: "",
-    tms: true
+    tms: true,
+    // set bounds to prevent 404's from appearing when
+    // the client requests image tiles that don't exist
+    bounds: [
+      L.latLng(20,-90),
+      L.latLng(70, 90)
+      ]
   }).addTo(map);
 
   // add a class to the image tile layer for dynamic css styling
