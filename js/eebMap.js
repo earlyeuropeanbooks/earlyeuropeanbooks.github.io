@@ -3,11 +3,12 @@ var globalMap = '';
 
 var initializeMap = function() {
 
-  // add basemap to the map; if the user is on 
-  // a large screen, move the center of the image
+  // add basemap to the map; make the centered portion
+  // of the map a function of the user's screen size
+  // 1440 = macbook pro, > 1800 = 27" wide
   var centerCoordinates = '';
   if ($(window).width() > 1800) {
-    centerCoordinates = new L.LatLng(50.85, 21.35);
+    centerCoordinates = new L.LatLng(48.85, 18.35);
   } else {
     centerCoordinates = new L.LatLng(45.85, 7.85);
   }
@@ -76,6 +77,7 @@ var initializeMap = function() {
   // add the image tiles to the map
   var imageTileLayer = L.tileLayer(imageTileUrl, {
     attribution: "",
+    opacity: .6,
     tms: true,
     // set bounds to prevent 404's from appearing when
     // the client requests image tiles that don't exist
