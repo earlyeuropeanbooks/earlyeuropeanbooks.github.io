@@ -5,18 +5,27 @@ var initializeMap = function() {
 
  // add basemap to the #map id div
   var map = new L.Map("map", {
-      center: new L.LatLng(46.85, 6.35),
+      center: new L.LatLng(46.85, 7.35),
       zoom: 5
   });
 
+  /***********
+  * Base Map *
+  ***********/
+
   // add map layer for black and white background
   map.addLayer(new L.tileLayer("http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}", {
-    maxZoom: 14,
+    maxZoom: 8,
     attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">' +
         'GIScience Research Group @ University of Heidelberg</a> &mdash; ' +
         'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }));
 
+  /********************
+  * Shapefile overlay *
+  ********************/
+
+  /*
   // add a map layer with the colored background tiles
   d3.json("/json/geojson/europeanCountries.geojson", function(error, json) {
     if (error) return console.warn(error);
@@ -48,6 +57,23 @@ var initializeMap = function() {
     // add the geoJson with data to the map
     L.geoJson(json, {style: style}).addTo(map);    
   });
+  */
+
+  /****************
+  * Image Overlay *
+  ****************/
+
+  // specify the path to the tms image tiles to be overlaid on the map
+  var imageTileUrl = "https://s3.amazonaws.com/eeb-map/carl-radefeld-1843/{z}/{x}/{y}.png"
+  
+  // add the image tiles to the map
+  L.tileLayer(imageTileUrl, {
+    minZoom: 5,
+    maxZoom: 8,
+    attribution: "Open Source",
+    opacity: .6,
+    tms: true
+  }).addTo(map);
 
   // add the points to the populated map
   d3.json("/json/page_load_book_locations.json", function(error, bookLocationJson) {
