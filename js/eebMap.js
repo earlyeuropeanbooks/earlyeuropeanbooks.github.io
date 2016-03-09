@@ -108,6 +108,7 @@ var initializeMap = function() {
       var bookId = bookLocationJson[i].id;
       var classificationId = bookLocationJson[i].classificationId;
       var languageId = bookLocationJson[i].languageId;
+      var sourceLibraryId = bookLocationJson[i].sourceLibraryId;
       var pubYear = bookLocationJson[i].year;
 
       // add book id and classification id to the circle's class values
@@ -120,6 +121,7 @@ var initializeMap = function() {
           " bookId" + String(bookId) + 
           " classificationId" + String(classificationId) +
           " languageId" + String(languageId) +
+          " sourceLibraryId" + String(sourceLibraryId) +
           " pubYear" + String(pubYear)
       }).addTo(map).on('click', mapPointClick);;
     };
@@ -150,6 +152,7 @@ var addMapPoints = function(json) {
     var bookId = json[i].id;
     var classificationId = json[i].classificationId;
     var languageId = json[i].languageId;
+    var sourceLibraryId = json[i].sourceLibraryId;
     var pubYear = json[i].year;
 
     // add a special class to encode the fact that the current circle is 
@@ -164,6 +167,7 @@ var addMapPoints = function(json) {
         " bookId" + String(bookId) + 
         " classificationId" + String(classificationId) +
         " languageId" + String(languageId) +
+        " sourceLibraryId" + String(sourceLibraryId) +
         " pubYear" + String(pubYear) + 
         " " + "currentSelectionPoint" 
     }).addTo(globalMap).on('click', mapPointClick);;
