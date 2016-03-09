@@ -42,37 +42,34 @@ with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
         " ".join(id.split()) if ord(l) < 128)
         continue
 
-      # clean the source library string
-      source_library = source_library.replace('"','')
-      
-      # remove lengthy strings
-      source_library = source_library.replace("Det Kongelige Bibliotek -",'')
-      source_library = source_library.replace("Koninklijke Bibliotheek,", '')
-      source_library = source_library.strip()
-
       source_libraries[source_library] += 1
 
     except IndexError:
       pass
 
-  # create list in which we'll store the clean language dicts
+  # create list in which we'll store the clean source library dicts
   clean_source_libraries = []
-  for c2, source_library in enumerate(source_libraries.iterkeys()):
+  for c2, raw_source_library in enumerate(source_libraries.iterkeys()):
 
     if not source_library:
       continue
 
+    clean_source_library = raw_source_library
+
+    # clean the source library string
+    clean_source_library = clean_source_library.replace('"','').replace("Det Kongelige Bibliotek -",'').replace("Koninklijke Bibliotheek,", '').strip()
+
     # check to see if the number of observations is below the minimum
     # number of observations
-    if source_libraries[source_library] < minimum_observations:
+    if source_libraries[raw_source_library] < minimum_observations:
       continue
 
     source_library_dict = {
         "selectionGroup": "sourceLibrary",
-        "selectionString": source_library,
-        "selectionStringRaw": source_library,
+        "selectionString": clean_source_library,
+        "selectionStringRaw": raw_source_library,
         "selectionId": c2,
-        "selectionCount": source_libraries[source_library]}
+        "selectionCount": source_libraries[raw_source_library]}
     clean_source_libraries.append(source_library_dict)
 
   # sort the list of classifications alphabetically
