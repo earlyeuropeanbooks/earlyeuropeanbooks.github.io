@@ -14,10 +14,10 @@ var initializeMap = function() {
   }
 
   var map = new L.Map("map", {
-      center: centerCoordinates,
-      zoom: 5,
-      maxZoom: 10,
-      minZoom: 3
+    center: centerCoordinates,
+    zoom: 5,
+    maxZoom: 10,
+    minZoom: 3
   });
 
   /***********
@@ -51,6 +51,7 @@ var initializeMap = function() {
              d > 10   ? '#FED976' :
                         '#FFEDA0';
     }
+
     // add function that will use the color function above to set a 
     // given shapefile's fill value
     function style(feature) {
@@ -63,9 +64,11 @@ var initializeMap = function() {
           fillOpacity: 0.1
       };
     }
+
     // add the geoJson with data to the map
     L.geoJson(json, {style: style}).addTo(map);    
-  });
+  
+  }); /* closes geojson load */
 
   /****************
   * Image Overlay *
@@ -82,7 +85,7 @@ var initializeMap = function() {
     // set bounds to prevent 404's from appearing when
     // the client requests image tiles that don't exist
     bounds: [
-      L.latLng(20,-90),
+      L.latLng(20,-45),
       L.latLng(70, 90)
       ]
   }).addTo(map);
@@ -94,6 +97,16 @@ var initializeMap = function() {
   var opacitySlider = new L.Control.opacitySlider();
     map.addControl(opacitySlider);
     opacitySlider.setOpacityLayer(imageTileLayer);
+
+  /*********************
+  * Add marker cluster *
+  **********************/
+
+  var markers = L.markerClusterGroup();
+
+  /**********************
+  * Add initial Markers *
+  ***********************/
 
   // add the points to the populated map
   d3.json("/json/page_load_book_locations.json", function(error, bookLocationJson) {
@@ -111,18 +124,24 @@ var initializeMap = function() {
       var pubYear = bookLocationJson[i].year;
 
       // add book id and classification id to the circle's class values
-      L.circleMarker([locationLat, locationLng], {
-        color: "#c00000", 
-        radius: 4,
-        opacity: 0,
-        fillOpacity: 0, 
-        className: "mapPoint" +
-          " bookId" + String(bookId) + 
-          " classificationId" + String(classificationId) +
-          " languageId" + String(languageId) +
-          " pubYear" + String(pubYear)
-      }).addTo(map).on('click', mapPointClick);;
+      markers.addLayer(
+        L.marker(
+          [locationLat, locationLng], {
+            color: "#c00000", 
+            radius: 4,
+            opacity: 0,
+            fillOpacity: 0, 
+            className: "mapPoint" +
+              " bookId" + String(bookId) + 
+              " classificationId" + String(classificationId) +
+              " languageId" + String(languageId) +
+              " pubYear" + String(pubYear)
+          }
+        )
+      );
     };
+
+    map.addLayer(markers)
 
     // having initialized the map points with 0 opacity, transition
     // them into the map
@@ -131,11 +150,17 @@ var initializeMap = function() {
       .duration(1250)
       .style("stroke-opacity", "0.5")
       .style("fill-opacity", "0.2");
-  });
+  
+  }); /* closes page load book locations call */
 
   // pass map into global "globalMap" object
   globalMap = map;
-};
+
+}; /* closes initializeMap() function */
+
+/*************************
+* Add Additional Markers *
+**************************/
 
 // function to add points to an extant map
 // currentSelectionPoint indicates this point was not part of 
