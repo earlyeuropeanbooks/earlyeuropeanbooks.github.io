@@ -336,9 +336,9 @@ def write_map_location_json():
 
 
 if __name__ == "__main__":
-  perturb_locations = 1
+  perturb_locations = 0
   perturb_limit = .3
-  max_observations_per_location = 20 
+  max_observations_per_location = 99999999 
  
   #unique_locations = retrieve_locations()
   #retrieve_location_json(unique_locations)
