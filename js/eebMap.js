@@ -115,7 +115,7 @@ var initializeMap = function() {
 
     iconSize:     [30, 30], // size of the icon
     //shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    iconAnchor:   [15, 15], // point of the icon which will correspond to marker's location
     //shadowAnchor: [4, 62],  // the same for the shadow
     //popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
   });
@@ -139,12 +139,36 @@ var initializeMap = function() {
       markers.addLayer(
         L.marker(
           [locationLat, locationLng], {
-            icon: greenIcon,
-            className: "mapPoint" +
-              " bookId" + String(bookId) + 
-              " classificationId" + String(classificationId) +
-              " languageId" + String(languageId) +
-              " pubYear" + String(pubYear)
+            icon: L.icon({
+              // specify the path to the png file to be used
+              // to represent the point on the map
+              iconUrl: '/images/green-book.png',
+              
+              // specify the path to a shadow image
+              //shadowUrl: '/images/green-book-shadow.png',
+
+              // set the size of the icon
+              iconSize:     [30, 30],
+
+              // set the size of the shadow
+              //shadowSize:   [50, 64],
+
+              // identify the point of the icon that will correspond to the marker's location on the map
+              iconAnchor:   [15, 15], 
+
+              // identify the point of the shadow that will correspond to the shadown's location on the map
+              //shadowAnchor: [4, 62],
+
+              // identify the point from which the popup should open relative to the iconAnchor
+              //popupAnchor:  [-3, -76]
+
+              // identify the class properties for the icon
+              className: "mapPoint" +
+                " bookId" + String(bookId) + 
+                " classificationId" + String(classificationId) +
+                " languageId" + String(languageId) +
+                " pubYear" + String(pubYear)
+            })
           }
         )
       );
