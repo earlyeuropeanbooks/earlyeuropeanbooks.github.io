@@ -16,7 +16,7 @@ var initializeMap = function() {
   var map = new L.Map("map", {
     center: centerCoordinates,
     zoom: 5,
-    maxZoom: 10,
+    maxZoom: 15,
     minZoom: 3
   });
 
@@ -108,6 +108,18 @@ var initializeMap = function() {
   * Add initial Markers *
   ***********************/
 
+  // define marker look
+  var greenIcon = L.icon({
+    iconUrl: '/images/green-book.png',
+    //shadowUrl: '/images/leaf-shadow.png',
+
+    iconSize:     [30, 30], // size of the icon
+    //shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    //shadowAnchor: [4, 62],  // the same for the shadow
+    //popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+  });
+
   // add the points to the populated map
   d3.json("/json/page_load_book_locations.json", function(error, bookLocationJson) {
     if (error) return console.warn(error);
@@ -127,10 +139,7 @@ var initializeMap = function() {
       markers.addLayer(
         L.marker(
           [locationLat, locationLng], {
-            color: "#c00000", 
-            radius: 4,
-            opacity: 0,
-            fillOpacity: 0, 
+            icon: greenIcon,
             className: "mapPoint" +
               " bookId" + String(bookId) + 
               " classificationId" + String(classificationId) +
