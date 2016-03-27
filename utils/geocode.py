@@ -76,8 +76,8 @@ if not os.path.exists("../json/user_selections/language_selections"):
 if not os.path.exists("../json/user_selections/classification_selections"):
   os.makedirs("../json/user_selections/classification_selections")
 
-if not os.path.exists("../json/user_selections/sourceLibrary_selections"):
-  os.makedirs("../json/user_selections/sourceLibrary_selections")
+if not os.path.exists("../json/user_selections/source_library_selections"):
+  os.makedirs("../json/user_selections/source_library_selections")
 
 def retrieve_locations():
   """
@@ -237,7 +237,7 @@ def write_map_location_json():
   selection_json = {
     "classification": defaultdict(list), 
     "language": defaultdict(list),
-    "sourceLibrary": defaultdict(list)
+    "source_library": defaultdict(list)
   }
 
   # create another counter that will count the number of observations for each location
@@ -247,7 +247,7 @@ def write_map_location_json():
   selection_json_counter = {
     "classification": defaultdict(lambda: defaultdict(int)),
     "language": defaultdict(lambda: defaultdict(int)),
-    "sourceLibrary": defaultdict(lambda: defaultdict(int))
+    "source_library": defaultdict(lambda: defaultdict(int))
   }
 
   # read in eeb-1-7-utf16.txt
@@ -344,7 +344,7 @@ def write_map_location_json():
               "classificationId": classification_id, 
               "languageId": language_id, 
               "year": clean_year,
-              "sourceLibraryId": source_library_id
+              "source_libraryId": source_library_id
             }
 
             # check to make sure we haven't reached the maximum
@@ -352,7 +352,7 @@ def write_map_location_json():
             # city
             selection_json_counter["classification"][classification_id][location_id] += 1
             selection_json_counter["language"][language_id][location_id] += 1
-            selection_json_counter["sourceLibrary"][source_library_id][location_id] += 1
+            selection_json_counter["source_library"][source_library_id][location_id] += 1
 
             """
             when a user clicks on a bar of the barplot, we want to 
@@ -377,9 +377,9 @@ def write_map_location_json():
                 selection_json["language"][language_id].append(
                     book_location_dict)
 
-            if (selection_json_counter["sourceLibrary"][source_library_id][location_id] <
+            if (selection_json_counter["source_library"][source_library_id][location_id] <
               max_observations_per_location):
-              selection_json["sourceLibrary"][source_library_id].append(
+              selection_json["source_library"][source_library_id].append(
                     book_location_dict)
 
             # check to see if we've already added the maximum number
@@ -403,9 +403,7 @@ def write_map_location_json():
   # write the full json for each selection id {0:n} of each possible selection
   # {classification, language, source_library}
   for selection_type_key in selection_json:
-    print selection_type_key
     for selection_id_key in selection_json[selection_type_key]:
-      print selection_id_key
       outgoing_json_file = ("../json/user_selections/" + 
           selection_type_key + "_selections/" +  
           selection_type_key + "_" + str(selection_id_key) + ".json")
