@@ -198,7 +198,7 @@ def optimize_json(book_locations_json):
   """
   optimized_json = []
   for hash_table in book_locations_json:
-    optimized_json.append(  [ hash_table["lat"], hash_table["lng"], hash_table["id"] ]  )
+    optimized_json.append(  [ hash_table["lat"], hash_table["lng"], hash_table["id"], hash_table["year"] ] )
   return optimized_json
 
 
