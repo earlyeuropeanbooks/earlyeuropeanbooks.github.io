@@ -30,7 +30,7 @@ var menu = d3.select("#selectionDropdown")
     yearRangeSlider.reset();
 
     // reload all of the markers
-    addMapPoints(globalPageLoadJson);
+    addMapPoints(globalPageLoadJson, 1473, 1700);
 
   });
 
