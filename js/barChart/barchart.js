@@ -29,14 +29,9 @@ var menu = d3.select("#selectionDropdown")
     // initial value range
     yearRangeSlider.reset();
 
-    // reset the opacity of all circles on the map to their 
-    // original values and restore pointer events to make all 
-    // circles clickable 
-    d3.selectAll(".mapPoint").transition()
-      .duration(1250)
-      .style("stroke-opacity", ".5")
-      .style("fill-opacity", "0.2")
-      .style("pointer-events", "auto");    
+    // reload all of the markers
+    addMapPoints(globalPageLoadJson);
+
   });
 
 
