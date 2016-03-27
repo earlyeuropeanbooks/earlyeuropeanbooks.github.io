@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="/css/markerCluster/MarkerCluster.css">
 
     <!-- Leaflet extension Awesome Markers CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/leaflet/leaflet.awesome-markers.css">
 
     <!-- JS -->
@@ -110,6 +110,7 @@
 
       </div> <!-- ./Visualization Navigation -->
 
+      <!-- Barchart -->
       <div id="barchart">
         <div id="barchart-label">
           <div><b>Books by Subject</b></div>
@@ -118,7 +119,14 @@
         </div>
         <div id="barchart-svg"></div>
       </div><!-- /barchart -->
-      <div id="map"></div>
+      <div id="map">
+
+        <!-- Progress bar to show progress of json load -->
+        <div id="progress">
+          <div id="progress-bar"></div>
+        </div>
+
+      </div>
     </div> <!-- /maincontent -->
   </body>
 
@@ -167,6 +175,6 @@
  
   <!-- Load opacity slider for map overlay -->
   <script src="/js/opacitySlider/Control.Opacity.js"></script>
-  <script src="/js/opacitySlider/jquery-ui-1.10.3.custom.min.js"></script>
+  <script src="/js/opacitySlider/jquery-ui-1.10.4.custom.js"></script>
 
 </html>
