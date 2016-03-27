@@ -1,0 +1,28 @@
+{
+  "name": "earlyeuropeanbooks.github.io",
+  "version": "1.0.0",
+  "description": "Mapping early european books",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/earlyeuropeanbooks/earlyeuropeanbooks.github.io.git"
+  },
+  "keywords": [
+    "leaflet",
+    "map",
+    "history"
+  ],
+  "author": "Doug Duhaime",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/earlyeuropeanbooks/earlyeuropeanbooks.github.io/issues"
+  },
+  "homepage": "https://github.com/earlyeuropeanbooks/earlyeuropeanbooks.github.io#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^1.0.0"
+  }
+}
