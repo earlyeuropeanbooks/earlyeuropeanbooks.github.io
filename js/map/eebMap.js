@@ -3,6 +3,7 @@
 // and a global data store of the page load json
 var globalMap = '';
 var globalMarkers = '';
+var globalLastJson = '';
 var globalPageLoadJson = '';
 
 // create function to initialize the map and prepare it for
@@ -125,7 +126,7 @@ var initializeMap = function() {
     globalMap = map;
 
     // call the function to add the initial page load json to the map
-    addMapPoints(globalPageLoadJson);
+    addMapPoints(globalPageLoadJson, 1473, 1700);
 
   }); /* closes the d3.json fetch and establishment of global */
 
@@ -136,8 +137,16 @@ var initializeMap = function() {
 **************************/
 
 // function to add points to an extant map
-var addMapPoints = function(bookLocationJson) {
+// add startYaer and endYear parameters so that if the user
+// has set the year range slider, we can filter out icons appropriately
+var addMapPoints = function(bookLocationJson, firstYear, lastYear) {
   
+  // update the globalLastJson object so we recall the last
+  // json file we loaded (we do this so we can pass the same
+  // json back through the addMapPoints function when users change
+  // the date range slider)
+  globalLastJson = bookLocationJson;
+
   // add functionality to display a progress bar while the json loads
   var progress = document.getElementById('progress');
   var progressBar = document.getElementById('progress-bar');
@@ -180,6 +189,15 @@ var addMapPoints = function(bookLocationJson) {
     var locationLng = bookLocationJson[i][1];
     var bookId = bookLocationJson[i][2];
     var pubYear = bookLocationJson[i][3];
+
+    // check if the pubYear of this record falls outside the year range of 
+    // the slider; if so, skip this record
+    if (pubYear > lastYear) {
+      continue;
+    }
+    else if (pubYear < firstYear) {
+      continue;
+    }
 
     // add book id and classification id to the icon's class values
     markers.addLayer(
@@ -228,7 +246,7 @@ var addMapPoints = function(bookLocationJson) {
 $("#clear-map").click(function() {
   
   // restore the initial page load json
-  addMapPoints(globalPageLoadJson);
+  addMapPoints(globalPageLoadJson, 1473, 1700);
 
   // restore opacity to all rects
   d3.selectAll("rect").transition()
