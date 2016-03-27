@@ -198,7 +198,7 @@ var addMapPoints = function(bookLocationJson) {
               // to preserve the class structure necessary for the 
               // icon to possess the intended color, then add the bookId
               // and publication Year
-              className: "awesome-marker mapPoint" +
+              className: "awesome-marker" +
                 " bookId" + String(bookId) + 
                 " pubYear" + String(pubYear) 
 
