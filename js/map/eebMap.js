@@ -132,9 +132,9 @@ var initializeMap = function() {
 
 }; /* closes initializeMap() function */
 
-/*************************
-* Add Additional Markers *
-**************************/
+/**************
+* Add Markers *
+**************/
 
 // function to add points to an extant map
 // add startYaer and endYear parameters so that if the user
@@ -161,25 +161,17 @@ var addMapPoints = function(bookLocationJson, firstYear, lastYear) {
       progress.style.display = 'none';
     }
   }
+
+  /*********************
+  * Add marker cluster *
+  **********************/
+
   var markers = L.markerClusterGroup({ 
     chunkedLoading: true, 
     chunkProgress: updateProgressBar, 
     chunkInterval: 300,
     chunkDelay: 10 
   });
-
-  /*********************
-  * Add marker cluster *
-  **********************/
-
-  // remove all extant markers from the view (if they exist)
-  try {
-    globalMarkers.clearLayers();
-  }
-  catch(TypeError) {
-    // we'll get a type error the first time the addMapPoints() function
-    // is called because there's no globalMarkers layer to clear; carry on
-  }
 
   // retrieve book location json and add to the map
   for (i = 0; i < bookLocationJson.length; i++) {
@@ -232,6 +224,12 @@ var addMapPoints = function(bookLocationJson, firstYear, lastYear) {
 
     );
   };
+
+  // if there are either group markers or individual markers on the map,
+  // remove them. If there are no group markers or individual markers,
+  // catch the TypeError that springs but don't do anything with that error
+  try {$(".leaflet-marker-icon").remove();} catch(TypeError) {};
+  try {$(".awesome-marker").remove();} catch(TypeError) {};
 
   // add the new markers to the map
   globalMap.addLayer(markers);
