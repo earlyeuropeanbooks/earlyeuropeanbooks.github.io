@@ -10,7 +10,6 @@ var mapPointClick = function() {
   // user has clicked on by extracting the class from the relevant icon
   var clickedNode = $(this);
   var selectedNodeClass = clickedNode["0"]["_icon"].getAttribute("class");
-
   var selectedBookId = selectedNodeClass.split("bookId")[1].split(" ")[0];
 
   // retrieve the data for the given book so we can fill out the template
