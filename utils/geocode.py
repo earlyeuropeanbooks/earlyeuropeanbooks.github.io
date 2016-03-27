@@ -66,7 +66,7 @@ def iriToUri(iri):
 # ping google geocoding api #
 #############################
 
-# make outfile directory
+# make outfile directories
 if not os.path.exists("../json/locations"):
   os.makedirs("../json/locations")
 
@@ -75,6 +75,9 @@ if not os.path.exists("../json/user_selections/language_selections"):
 
 if not os.path.exists("../json/user_selections/classification_selections"):
   os.makedirs("../json/user_selections/classification_selections")
+
+if not os.path.exists("../json/user_selections/sourceLibrary_selections"):
+  os.makedirs("../json/user_selections/sourceLibrary_selections")
 
 def retrieve_locations():
   """
@@ -172,6 +175,17 @@ def map_language_string_to_id():
   return language_string_to_id
 
 
+def map_source_library_string_to_id():
+  """Read in the source_library.json to map source library strings
+  to their respective source_library ids"""
+  source_library_string_to_id = {}
+  with open("../json/source_libraries.json") as f:
+    f = json.load(f)
+    for d in f:
+      source_library_string_to_id[ d["selectionStringRaw"] ] = d["selectionId"]
+  return source_library_string_to_id
+
+
 #################
 # Optimize json #
 #################
@@ -205,6 +219,7 @@ def write_map_location_json():
   # as a class value within each book's point on the map
   classification_string_to_id = map_classification_string_to_id()
   language_string_to_id = map_language_string_to_id()
+  source_library_string_to_id = map_source_library_string_to_id()
 
   book_locations_json = []
 
@@ -213,21 +228,29 @@ def write_map_location_json():
   # for each location to limit DOM strain when loading the page initially
   locations_counter = defaultdict(int)
 
-  # for each selection type {classification, language} for each value
+  # for each selection type {classification, language, source library} for each value
   # in that selection, populate a full list of json so that we can populate
   # all observations for that value within the selection (e.g. plot all
   # books with classificationId == witchcraft, not just the subset that
   # happen to have been included in the initial page json, which is limited
   # by the maximum observations per location
-  selection_json = {"classification": defaultdict(list), "language": defaultdict(list)}
+  selection_json = {
+    "classification": defaultdict(list), 
+    "language": defaultdict(list),
+    "sourceLibrary": defaultdict(list)
+  }
 
   # create another counter that will count the number of observations for each location
   # for each selection id for each selection occurs. We don't want to plot 10,000 
   # observations with language "French" from Paris, because this makes elements
   # unclickable and oversaturates the DOM
-  selection_json_counter = {"classification": defaultdict(lambda: defaultdict(int)),
-      "language": defaultdict(lambda: defaultdict(int))}
+  selection_json_counter = {
+    "classification": defaultdict(lambda: defaultdict(int)),
+    "language": defaultdict(lambda: defaultdict(int)),
+    "sourceLibrary": defaultdict(lambda: defaultdict(int))
+  }
 
+  # read in eeb-1-7-utf16.txt
   with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
     rows = f.readlines()
     for r in rows[1:-1]:
@@ -239,6 +262,7 @@ def write_map_location_json():
         clean_year = sr[6]
         language_string = sr[7] 
         classification_string = sr[8] 
+        source_library_string = sr[11]
 
         # if the book id isn't numeric, this row is misinterpreted, so don't
         # persist the record
@@ -253,7 +277,7 @@ def write_map_location_json():
         # because there are many records with year fields published as ranges,
         # e.g. 1473-1500, capture the latter year to be conservative
         if "-" in clean_year:
-          clean_year = clean_year.split("-")[0]
+          clean_year = clean_year.split("-")[1]
         # if there are X's in the year e.g. 157X, replace the X with a zero
         clean_year = clean_year.replace("X","0")
         # then convert the entire clean_year object to an integer
@@ -276,6 +300,11 @@ def write_map_location_json():
           classification_id = classification_string_to_id[classification_string]
         except KeyError:
           classification_id = ''
+
+        try:
+          source_library_id = source_library_string_to_id[source_library_string]
+        except KeyError:
+          source_library_id = ''
 
         # use the location's id (if available) to retrieve lat longs 
         # from persisted json
@@ -308,22 +337,32 @@ def write_map_location_json():
 
             # create the book level information we'll use to plot the 
             # book on the map
-            book_location_dict = {"id":id, "lat":lat, 
-                "lng":lng, "classificationId": classification_id, 
-                "languageId": language_id, "year": clean_year}
+            book_location_dict = {
+              "id":id, 
+              "lat":lat, 
+              "lng":lng, 
+              "classificationId": classification_id, 
+              "languageId": language_id, 
+              "year": clean_year,
+              "sourceLibraryId": source_library_id
+            }
 
             # check to make sure we haven't reached the maximum
             # number of observations for the current selection in the current
             # city
             selection_json_counter["classification"][classification_id][location_id] += 1
             selection_json_counter["language"][language_id][location_id] += 1
+            selection_json_counter["sourceLibrary"][source_library_id][location_id] += 1
 
-            # when a user clicks on a bar of the barplot, we want to 
-            # plot all records with the given language or classification
-            # id. For example, if a user clicks on "Culinary arts", we want
-            # to plot the records with culinary arts books, so build up
-            # a dictionary for each selection id of each selection group
-            # [currently limited to a book's classification or language]
+            """
+            when a user clicks on a bar of the barplot, we want to 
+            plot all records with the given language, classification, 
+            or source library id. For example, if a user clicks 
+            arts books, so build up on "Culinary arts", we want to plot 
+            the records with culinary a dictionary for each selection id 
+            of each selection group [currently limited to a book's 
+            classification or language]
+            """
 
             # before adding the current observation to its selection json,
             # make sure that we haven't already recorded the maximum
@@ -336,6 +375,11 @@ def write_map_location_json():
             if (selection_json_counter["language"][language_id][location_id] <
                 max_observations_per_location):
                 selection_json["language"][language_id].append(
+                    book_location_dict)
+
+            if (selection_json_counter["sourceLibrary"][source_library_id][location_id] <
+              max_observations_per_location):
+              selection_json["sourceLibrary"][source_library_id].append(
                     book_location_dict)
 
             # check to see if we've already added the maximum number
@@ -357,9 +401,11 @@ def write_map_location_json():
     json.dump( optimize_json(book_locations_json), book_locations_json_out)
 
   # write the full json for each selection id {0:n} of each possible selection
-  # {classification, language}
+  # {classification, language, source_library}
   for selection_type_key in selection_json:
+    print selection_type_key
     for selection_id_key in selection_json[selection_type_key]:
+      print selection_id_key
       outgoing_json_file = ("../json/user_selections/" + 
           selection_type_key + "_selections/" +  
           selection_type_key + "_" + str(selection_id_key) + ".json")
