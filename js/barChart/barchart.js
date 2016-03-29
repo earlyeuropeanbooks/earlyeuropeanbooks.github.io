@@ -30,7 +30,7 @@ var menu = d3.select("#selectionDropdown")
     yearRangeSlider.reset();
 
     // reload all of the markers
-    addMapPoints(globalPageLoadJson, 1473, 1700);
+    addMapPointsWrapper(globalPageLoadJson, 1473, 1700);
 
   });
 
@@ -77,7 +77,7 @@ var barchartClick = function(d) {
   // add those points to the plot
   d3.json(selectionJsonPath, function(error, json) {
     if (error) return console.warn(error);
-    addMapPoints(json);
+    addMapPointsWrapper(json, 1473, 1700);
   }); 
 
   // reset the range slider to its initial range
