@@ -65,7 +65,7 @@ with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
       continue
 
     source_library_dict = {
-        "selectionGroup": "sourceLibrary",
+        "selectionGroup": "source_library",
         "selectionString": clean_source_library,
         "selectionStringRaw": raw_source_library,
         "selectionId": c2,

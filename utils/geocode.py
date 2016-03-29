@@ -76,11 +76,13 @@ if not os.path.exists("../json/user_selections/language_selections"):
 if not os.path.exists("../json/user_selections/classification_selections"):
   os.makedirs("../json/user_selections/classification_selections")
 
-if not os.path.exists("../json/user_selections/sourceLibrary_selections"):
-  os.makedirs("../json/user_selections/sourceLibrary_selections")
+if not os.path.exists("../json/user_selections/source_library_selections"):
+  os.makedirs("../json/user_selections/source_library_selections")
 
 def retrieve_locations():
-  """Read in eeb spreadsheet and retrieve location json for each location"""
+  """
+  Read in eeb spreadsheet and retrieve location json for each location
+  """
   locations = []
 
   with codecs.open(sys.argv[1], 'r', 'utf-16') as f:
@@ -98,8 +100,14 @@ def retrieve_locations():
   return unique_locations
 
 
+#################
+# Retrieve json #
+#################
+
 def retrieve_location_json(unique_locations):
-  """Retrieve json for each location and write that json to disk"""
+  """
+  Retrieve json for each location and write that json to disk
+  """
   location_id_to_name = {}
 
   google_api_key = 'AIzaSyDmBh4pBQOekQp2tGuaMoub3DhEmyY48PA'
@@ -142,8 +150,10 @@ def retrieve_location_json(unique_locations):
 
 
 def map_classification_string_to_id():
-  """Read in the classifications.json to map classification strings to
-  their respective classification ids"""
+  """
+  Read in the classifications.json to map classification strings to
+  their respective classification ids
+  """
   classification_string_to_id = {}
   with open("../json/classifications.json") as f:
     f = json.load(f)
@@ -153,8 +163,10 @@ def map_classification_string_to_id():
 
 
 def map_language_string_to_id():
-  """Read in the languages.json to map language strings to 
-  their respective language ids"""
+  """
+  Read in the languages.json to map language strings to 
+  their respective language ids
+  """
   language_string_to_id = {}
   with open("../json/languages.json") as f:
     f = json.load(f)
@@ -174,9 +186,31 @@ def map_source_library_string_to_id():
   return source_library_string_to_id
 
 
+#################
+# Optimize json #
+#################
+
+def optimize_json(book_locations_json):
+  """
+  Read in outgoing json with string keys and return a simple array
+  that contains [lat, long, book_id, pub_year] for each book 
+  in the array, in order to optimize page loads
+  """
+  optimized_json = []
+  for hash_table in book_locations_json:
+    optimized_json.append(  [ hash_table["lat"], hash_table["lng"], hash_table["id"], hash_table["year"] ] )
+  return optimized_json
+
+
+######################
+# Write json to disk #
+######################
+
 def write_map_location_json():
-  """Write json to disk for each location to be plotted. This is the
-     json that will be sent to the client upon initial page load"""
+  """
+  Write json to disk for each location to be plotted. This is the
+     json that will be sent to the client upon initial page load
+  """
   with open("../json/location_id_to_string.json") as f:
     location_id_to_string = json.load(f)
     string_to_location_id = {v:k for k, v in location_id_to_string.items()}
@@ -203,7 +237,7 @@ def write_map_location_json():
   selection_json = {
     "classification": defaultdict(list), 
     "language": defaultdict(list),
-    "sourceLibrary": defaultdict(list)
+    "source_library": defaultdict(list)
   }
 
   # create another counter that will count the number of observations for each location
@@ -213,7 +247,7 @@ def write_map_location_json():
   selection_json_counter = {
     "classification": defaultdict(lambda: defaultdict(int)),
     "language": defaultdict(lambda: defaultdict(int)),
-    "sourceLibrary": defaultdict(lambda: defaultdict(int))
+    "source_library": defaultdict(lambda: defaultdict(int))
   }
 
   # read in eeb-1-7-utf16.txt
@@ -310,7 +344,7 @@ def write_map_location_json():
               "classificationId": classification_id, 
               "languageId": language_id, 
               "year": clean_year,
-              "sourceLibraryId": source_library_id
+              "source_libraryId": source_library_id
             }
 
             # check to make sure we haven't reached the maximum
@@ -318,7 +352,7 @@ def write_map_location_json():
             # city
             selection_json_counter["classification"][classification_id][location_id] += 1
             selection_json_counter["language"][language_id][location_id] += 1
-            selection_json_counter["sourceLibrary"][source_library_id][location_id] += 1
+            selection_json_counter["source_library"][source_library_id][location_id] += 1
 
             """
             when a user clicks on a bar of the barplot, we want to 
@@ -343,9 +377,9 @@ def write_map_location_json():
                 selection_json["language"][language_id].append(
                     book_location_dict)
 
-            if (selection_json_counter["sourceLibrary"][source_library_id][location_id] <
+            if (selection_json_counter["source_library"][source_library_id][location_id] <
               max_observations_per_location):
-              selection_json["sourceLibrary"][source_library_id].append(
+              selection_json["source_library"][source_library_id].append(
                     book_location_dict)
 
             # check to see if we've already added the maximum number
@@ -364,27 +398,25 @@ def write_map_location_json():
 
   # write the json to be used on initial page load
   with open("../json/page_load_book_locations.json",'w') as book_locations_json_out:
-    json.dump(book_locations_json, book_locations_json_out)
+    json.dump( optimize_json(book_locations_json), book_locations_json_out)
 
   # write the full json for each selection id {0:n} of each possible selection
   # {classification, language, source_library}
   for selection_type_key in selection_json:
-    print selection_type_key
     for selection_id_key in selection_json[selection_type_key]:
-      print selection_id_key
       outgoing_json_file = ("../json/user_selections/" + 
           selection_type_key + "_selections/" +  
           selection_type_key + "_" + str(selection_id_key) + ".json")
 
       with open(outgoing_json_file, 'w') as selection_json_out:
-        json.dump(selection_json[selection_type_key][selection_id_key],
+        json.dump( optimize_json(selection_json[selection_type_key][selection_id_key]) ,
             selection_json_out)
 
 
 if __name__ == "__main__":
   perturb_locations = 1
-  perturb_limit = .3
-  max_observations_per_location = 20 
+  perturb_limit = .03
+  max_observations_per_location = 99999999 
  
   #unique_locations = retrieve_locations()
   #retrieve_location_json(unique_locations)

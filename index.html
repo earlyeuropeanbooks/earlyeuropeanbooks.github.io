@@ -3,7 +3,7 @@
   <head>
 
     <!-- Set page encoding -->
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-16" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <!-- Set page title -->
     <title>ProQuest - EEB</title>
@@ -11,26 +11,51 @@
     <!-- add favicon -->
     <link rel='shortcut icon' href='/images/favicon.png' type='image/x-icon'> 
 
-    <!-- Load Application CSS -->
-    <link rel="stylesheet" href="/css/main_styles_eurobo.css">
-    <link rel="stylesheet" href="/css/eeb-map.css">
-    <link rel="stylesheet" href="/css/bootstrap-form-control.css">
-    <link rel="stylesheet" href="/css/bootstrap-modal.css">
-    <link rel="stylesheet" href="/css/leaflet.min.css">
-    <link rel="stylesheet" href="/css/ion.rangeSlider.css">
-    <link rel="stylesheet" href="/css/ion.rangeSlider.skinHTML5.css">
-    <link rel="stylesheet" href="/css/Control.Opacity.css">
-    <link rel="stylesheet" href="/css/jquery-ui-1.10.3.custom.min.css">
+    <!-- CSS -->
+
+    <!-- Chadwyck-Healey CSS -->
+    <link rel="stylesheet" href="/css/chadwyckHealey/main_styles_eurobo.css">
+    
+    <!-- application CSS -->
+    <link rel="stylesheet" href="/css/app/eeb-map.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap-form-control.css">
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap-modal.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="/css/leaflet/leaflet.min.css">
+
+    <!-- Range slider CSS -->
+    <link rel="stylesheet" href="/css/rangeSlider/ion.rangeSlider.css">
+    <link rel="stylesheet" href="/css/rangeSlider/ion.rangeSlider.skinHTML5.css">
+    <link rel="stylesheet" href="/css/rangeSlider/Control.Opacity.css">
+
+    <!-- Button related CSS -->
+    <link rel="stylesheet" href="/css/jqueryUi/jquery-ui-1.10.3.custom.min.css">
+    
+    <!-- Marker cluster CSS -->
+    <link rel="stylesheet" href="/css/markerCluster/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="/css/markerCluster/MarkerCluster.css">
+
+    <!-- Leaflet extension Awesome Markers CSS -->
+    <link rel="stylesheet" href="/css/font-awesome-4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/leaflet/leaflet.awesome-markers.css">
+
+    <!-- JS -->
 
     <!-- Load Application JS -->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/leaflet.js"></script>
-    <script src="/js/d3.v3.min.js"></script>
-    <script src="/js/handlebars.min-latest.js"></script>
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/bootstrap/bootstrap.min.js"></script>
+    <script src="/js/leaflet/leaflet.js"></script>
+    <script src="/js/d3/d3.v3.min.js"></script>
+    <script src="/js/modal/handlebars.min-latest.js"></script>
+    <script src="/js/leaflet/leaflet.markercluster.js"></script>
+    <script src="/js/leaflet/leaflet.awesome-markers.js"></script>
   </head>
 
   <body onload=initializeMap()>
+    <div id="overlay"></div>
     <!-- Navigation -->
     <div id="hiddenMessages2"></div>
     <div id="skip"><a accesskey="2" href="#start">
@@ -61,7 +86,7 @@
     <!-- Main Content -->
     <div id="maincontent">
       <div class="clearBoth"></div>
-      <a id="start" name="start"></a>
+      <a id="start"></a>
 
       <!-- Visualization Navigation -->
       <div id="visualization-nav">
@@ -87,6 +112,7 @@
 
       </div> <!-- ./Visualization Navigation -->
 
+      <!-- Barchart -->
       <div id="barchart">
         <div id="barchart-label">
           <div><b>Books by Subject</b></div>
@@ -95,18 +121,23 @@
         </div>
         <div id="barchart-svg"></div>
       </div><!-- /barchart -->
-      <div id="map"></div>
+      <div id="map">
+
+        <!-- Progress bar to show progress of json load -->
+        <div id="progress">
+          <div id="progress-bar"></div>
+        </div>
+
+      </div>
     </div> <!-- /maincontent -->
   </body>
 
 
-<!-- Popup Modal Template -->
-  <div id="myModal" class="modal fade" tabindex="-1" role="dialog" 
-      aria-labelledby="myModalLabel" aria-hidden="true">
+  <!-- Popup Modal Template -->
+  <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-body">
-        </div>
+        <div class="modal-body"></div>
       </div>
     </div>
   </div>
@@ -129,21 +160,21 @@
     </div>
   </script>
 
+  <!-- Load year range slider for selection of records on publication year -->
+  <script src="/js/rangeSlider/ion.rangeSlider.js"></script>
+  <script src="/js/rangeSlider/yearRangeSlider.js"></script>
+
   <!-- Barchart JS -->
-  <script src="/js/barchart.js"></script>
+  <script src="/js/barChart/barchart.js"></script>
 
   <!-- Populate Modal Template -->
-  <script src="/js/populateModalTemplate.js"></script>
+  <script src="/js/modal/populateModalTemplate.js"></script>
 
   <!-- Load EEB Map JS -->
-  <script src="/js/eebMap.js"></script>
-
-  <!-- Load year range slider for selection of records on publication year -->
-  <script src="/js/ion.rangeSlider.js"></script>
-  <script src="/js/yearRangeSlider.js"></script>
+  <script src="/js/map/eebMap.js"></script>
  
   <!-- Load opacity slider for map overlay -->
-  <script src="/js/Control.Opacity.js"></script>
-  <script src="/js/jquery-ui-1.10.3.custom.min.js"></script>
+  <script src="/js/opacitySlider/Control.Opacity.js"></script>
+  <script src="/js/opacitySlider/jquery-ui-1.10.4.custom.js"></script>
 
 </html>
