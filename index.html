@@ -3,7 +3,7 @@
   <head>
 
     <!-- Set page encoding -->
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-16" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <!-- Set page title -->
     <title>ProQuest - EEB</title>
@@ -50,11 +50,12 @@
     <script src="/js/leaflet/leaflet.js"></script>
     <script src="/js/d3/d3.v3.min.js"></script>
     <script src="/js/modal/handlebars.min-latest.js"></script>
-    <script src="/js/leaflet/leaflet.markerCluster.js"></script>
+    <script src="/js/leaflet/leaflet.markercluster.js"></script>
     <script src="/js/leaflet/leaflet.awesome-markers.js"></script>
   </head>
 
   <body onload=initializeMap()>
+    <div id="overlay"></div>
     <!-- Navigation -->
     <div id="hiddenMessages2"></div>
     <div id="skip"><a accesskey="2" href="#start">
@@ -85,7 +86,7 @@
     <!-- Main Content -->
     <div id="maincontent">
       <div class="clearBoth"></div>
-      <a id="start" name="start"></a>
+      <a id="start"></a>
 
       <!-- Visualization Navigation -->
       <div id="visualization-nav">
@@ -132,13 +133,11 @@
   </body>
 
 
-<!-- Popup Modal Template -->
-  <div id="myModal" class="modal fade" tabindex="-1" role="dialog" 
-      aria-labelledby="myModalLabel" aria-hidden="true">
+  <!-- Popup Modal Template -->
+  <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-body">
-        </div>
+        <div class="modal-body"></div>
       </div>
     </div>
   </div>
@@ -161,6 +160,10 @@
     </div>
   </script>
 
+  <!-- Load year range slider for selection of records on publication year -->
+  <script src="/js/rangeSlider/ion.rangeSlider.js"></script>
+  <script src="/js/rangeSlider/yearRangeSlider.js"></script>
+
   <!-- Barchart JS -->
   <script src="/js/barChart/barchart.js"></script>
 
@@ -169,10 +172,6 @@
 
   <!-- Load EEB Map JS -->
   <script src="/js/map/eebMap.js"></script>
-
-  <!-- Load year range slider for selection of records on publication year -->
-  <script src="/js/rangeSlider/ion.rangeSlider.js"></script>
-  <script src="/js/rangeSlider/yearRangeSlider.js"></script>
  
   <!-- Load opacity slider for map overlay -->
   <script src="/js/opacitySlider/Control.Opacity.js"></script>
