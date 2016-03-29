@@ -170,7 +170,6 @@ var addMapPoints = function(bookLocationJson, firstYear, lastYear) {
   var progress = document.getElementById('progress');
   var progressBar = document.getElementById('progress-bar');
   function updateProgressBar(processed, total, elapsed, layersArray) {
-    console.log(firstYear, lastYear);
     if (elapsed > 750) {
       // if it takes more than a second to load, display the progress bar:
       progress.style.display = 'block';
