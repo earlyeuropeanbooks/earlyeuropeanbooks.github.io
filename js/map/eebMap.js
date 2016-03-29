@@ -5,6 +5,7 @@ var globalMap = '';
 var globalMarkers = '';
 var globalLastJson = '';
 var globalPageLoadJson = '';
+var globalDrawingMap = '';
 
 // create function to initialize the map and prepare it for
 // the addition of markers
@@ -137,10 +138,28 @@ var initializeMap = function() {
 **************/
 
 // function to add points to an extant map
-// add startYaer and endYear parameters so that if the user
-// has set the year range slider, we can filter out icons appropriately
+// add startYear and endYear parameters so that if the user
+// has set the year range slider, we can filter out icons 
+// appropriately. 
 var addMapPoints = function(bookLocationJson, firstYear, lastYear) {
-  
+
+  globalDrawingMap = 1;
+
+  /*
+  $("#overlay").css({
+      "background-color": "rgba(1, 1, 1, 0.3)",
+      "bottom": "0",
+      "left": "0",
+      "position": "fixed",
+      "right": "0",
+      "top": "0",
+      "z-index": "9999"
+  });
+  */
+
+  // remove the extantLayer from the map
+  try {globalMarkers.clearLayers();}catch(err){};
+
   // update the globalLastJson object so we recall the last
   // json file we loaded (we do this so we can pass the same
   // json back through the addMapPoints function when users change
@@ -151,6 +170,7 @@ var addMapPoints = function(bookLocationJson, firstYear, lastYear) {
   var progress = document.getElementById('progress');
   var progressBar = document.getElementById('progress-bar');
   function updateProgressBar(processed, total, elapsed, layersArray) {
+    console.log(firstYear, lastYear);
     if (elapsed > 750) {
       // if it takes more than a second to load, display the progress bar:
       progress.style.display = 'block';
@@ -158,6 +178,7 @@ var addMapPoints = function(bookLocationJson, firstYear, lastYear) {
     }
     if (processed === total) {
       // all markers processed - hide the progress bar:
+      globalDrawingMap = 0;
       progress.style.display = 'none';
     }
   }
@@ -170,7 +191,7 @@ var addMapPoints = function(bookLocationJson, firstYear, lastYear) {
     chunkedLoading: true, 
     chunkProgress: updateProgressBar, 
     chunkInterval: 300,
-    chunkDelay: 10 
+    chunkDelay: 30
   });
 
   // retrieve book location json and add to the map
@@ -225,12 +246,6 @@ var addMapPoints = function(bookLocationJson, firstYear, lastYear) {
     );
   };
 
-  // if there are either group markers or individual markers on the map,
-  // remove them. If there are no group markers or individual markers,
-  // catch the TypeError that springs but don't do anything with that error
-  try {$(".leaflet-marker-icon").remove();} catch(TypeError) {};
-  try {$(".awesome-marker").remove();} catch(TypeError) {};
-
   // add the new markers to the map
   globalMap.addLayer(markers);
 
@@ -239,19 +254,35 @@ var addMapPoints = function(bookLocationJson, firstYear, lastYear) {
 }; 
 
 
+var addMapPointsWrapper = function(json, startYear, endYear) {
+  if (globalDrawingMap==1) {
+    setTimeout(function(){addMapPointsWrapper(json, startYear, endYear)}, 100)
+  }
+  else {
+    addMapPoints(json, startYear, endYear);
+  }
+}
+
+
+var clearMap = function() {
+  if (globalDrawingMap === 1) {
+    setTimeout(function(){clearMap()}, 100);
+  } else {
+    // restore the initial page load json
+    addMapPoints(globalPageLoadJson, 1473, 1700);
+
+    // restore opacity to all rects
+    d3.selectAll("rect").transition()
+      .duration(1250)
+      .style("opacity", "1");
+
+    // reset year slider
+    yearRangeSlider.reset();
+  }; 
+};
+
 // function to reset map to initial page load conditions
 // on click of the "Reset Map" button
 $("#clear-map").click(function() {
-  
-  // restore the initial page load json
-  addMapPoints(globalPageLoadJson, 1473, 1700);
-
-  // restore opacity to all rects
-  d3.selectAll("rect").transition()
-    .duration(1250)
-    .style("opacity", "1");
-
-  // reset year slider
-  yearRangeSlider.reset();
+  clearMap();
 });
-
