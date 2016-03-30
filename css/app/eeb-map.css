@@ -24,6 +24,7 @@ select.form-control {
   left: 0;
   right: 0;
   background-color: #F2F2F2;
+  min-width:87.5em;
 }
 
 #visualization-nav-data-map {
@@ -55,7 +56,7 @@ select.form-control {
   border: 1px solid rgb(166, 166, 166);
   background-color:#f8f8f8;
   font-family: Arial;
-  height: 30px;
+  min-height: 30px;
   padding: 6px 12px;
   border-radius: 4px;
   margin-left: 1050px;
