@@ -133,7 +133,7 @@ select.form-control {
 /****** visualizations ******/
 
 #map { 
-  position: absolute; 
+  position: fixed; 
   top: 145px; 
   bottom: 0; 
   right: 0; 
